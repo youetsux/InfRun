@@ -519,6 +519,7 @@ void FbxParts::DrawSkinAnime(Transform& transform, FbxTime time)
 		// 作成された関節行列を使って、頂点を変形する
 		XMVECTOR Pos = XMLoadFloat3(&pWeightArray_[i].posOrigin);
 		XMVECTOR Normal = XMLoadFloat3(&pWeightArray_[i].normalOrigin);
+
 		XMStoreFloat3(&pVertexData_[i].position,XMVector3TransformCoord(Pos, matrix));
 		XMFLOAT3X3 mat33;
 		XMStoreFloat3x3(&mat33, matrix);

@@ -5,7 +5,7 @@
 
 enum OSS
 {
-	IDLE,JUMPUP,JUMPDOWN,JUMP,RUN,SPRINT,RPUNCH,LPUNCH,MAXOSS
+	IDLE,RUN,DEFEET,MAXOSS
 };
 
 class CDTimer;
@@ -23,7 +23,7 @@ namespace
 	float MOVESPEED = 0.2f;
 	std::pair<int, int> OSFRAMES[MAXOSS]
 	{
-		{1,105},{106,130},{131,155},{156,226},{308,347},{348,383},{384,438},{439,500}
+		{1,116},{117,191},{192,451}
 	};
 	const XMFLOAT3 INITDIR{ 0,0,1 };
 	const float ROTANGLE[5]{ 180, 90, 0, 270, 0 };
