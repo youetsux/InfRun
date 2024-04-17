@@ -2,10 +2,11 @@
 #include "Engine/GameObject.h"
 
 class Ossan;
+class AnimePlane;
 //テストシーンを管理するクラス
 class TestScene : public GameObject
 {
-	Ossan* player;
+	AnimePlane* player;
 	XMFLOAT3 camPos_;
 public:
 	//コンストラクタ

@@ -1,15 +1,14 @@
 #pragma once
 #include "Engine/GameObject.h"
 
-
-class AnimePlane :
+class Axis :
     public GameObject
 {
 	int hmodel_;
 public:
 	//コンストラクタ
 	//引数：parent  親オブジェクト（SceneManager）
-	AnimePlane(GameObject* parent);
+	Axis(GameObject* parent);
 
 	//初期化
 	void Initialize() override;

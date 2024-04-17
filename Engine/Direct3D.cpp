@@ -31,7 +31,7 @@ namespace Direct3D
 
 	bool		isDrawCollision_ = true;	//コリジョンを表示するか
 	bool		_isLighting = false;		//ライティングするか
-
+	float		clearColor[4];
 
 
 	//extern宣言した変数の初期化
@@ -40,7 +40,7 @@ namespace Direct3D
 	SHADER_BUNDLE			shaderBundle[SHADER_MAX] = { 0 };
 	int						screenWidth_ = 0;
 	int						screenHeight_ = 0;
-
+	
 
 
 	//初期化処理
@@ -199,17 +199,23 @@ namespace Direct3D
 		pContext_->OMSetRenderTargets(1, &pRenderTargetView_, pDepthStencilView);            // 描画先を設定（今後はレンダーターゲットビューを介して描画してね）
 		pContext_->RSSetViewports(1, &vp);                                      // ビューポートのセット
 
-
-
-
-
-
 		//コリジョン表示するか
 		isDrawCollision_ = GetPrivateProfileInt("DEBUG", "ViewCollider", 0, ".\\setup.ini") != 0;
 
-
 		screenWidth_ = screenWidth;
 		screenHeight_ = screenHeight;
+
+		int backCol[4];
+		enum COLORS { R, G, B, A };
+		backCol[R] = GetPrivateProfileInt("BACKCOLOR", "R",  26, ".\\setup.ini");
+		backCol[G] = GetPrivateProfileInt("BACKCOLOR", "G",  52, ".\\setup.ini");
+		backCol[B] = GetPrivateProfileInt("BACKCOLOR", "B",  52, ".\\setup.ini");
+		backCol[A] = GetPrivateProfileInt("BACKCOLOR", "A", 255, ".\\setup.ini");
+
+		for (int i = 0; i < 4; i++)
+			clearColor[i] = (float)backCol[i]/255.0;
+
+
 
 		return S_OK;
 	}
@@ -390,7 +396,8 @@ namespace Direct3D
 		if (NULL == pSwapChain_) return;
 
 		//背景の色
-		float clearColor[4] = { 0.1f, 0.2f, 0.2f, 1.0f };//R,G,B,A
+		//float clearColor[4] = { 0.1f, 0.2f, 0.2f, 1.0f };//R,G,B,A
+
 
 		//画面をクリア
 		pContext_->ClearRenderTargetView(pRenderTargetView_, clearColor);
