@@ -15,9 +15,9 @@ Ossan::Ossan(GameObject* parent)
 
 void Ossan::Initialize()
 {
-	hmodel_ = Model::Load("gamesmallman.fbx");
+	hmodel_ = Model::Load("plane_with_tex.fbx");
 	assert(hmodel_ >= 0);
-	transform_.scale_ = { 0.1,0.1,0.1 };
+	transform_.scale_ = { 1,1,1 };
 	transform_.position_ = { 0, 0, 0 };
 	Model::SetAnimFrame(hmodel_, OSFRAMES[ossanState_]. first, OSFRAMES[ossanState_].second, 1 );
 	cdtimer_ = new CDTimer(this, 5.0);

@@ -99,6 +99,7 @@
     <ClCompile Include="Ossan.cpp" />
     <ClCompile Include="CDTimer.cpp" />
     <ClCompile Include="Ground.cpp" />
+    <ClCompile Include="AnimePlane.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Engine\BoxCollider.h">
@@ -174,6 +175,7 @@
     <ClInclude Include="Ossan.h" />
     <ClInclude Include="CDTimer.h" />
     <ClInclude Include="Ground.h" />
+    <ClInclude Include="AnimePlane.h" />
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="Assets\Shader\Simple2D.hlsl">

@@ -6,7 +6,7 @@
 #include "Engine/Debug.h"
 #include "Ground.h"
 
-const XMFLOAT3 INITCAMPOS{ 0, 5, -205 };
+const XMFLOAT3 INITCAMPOS{ 0, 5, -15 };
 
 
 //コンストラクタ
