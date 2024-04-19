@@ -8,7 +8,7 @@ Axis::Axis(GameObject* parent)
 
 void Axis::Initialize()
 {
-	hmodel_ = Model::Load("axis.fbx");
+	hmodel_ = Model::Load("axis_zero.fbx");
 	assert(hmodel_ >= 0);
 	transform_.scale_ = { 1,1,1 };
 	transform_.position_ = { 0, 0, 0 };

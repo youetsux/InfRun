@@ -6,7 +6,7 @@
 #include "Engine/Debug.h"
 #include "Axis.h"
 
-const XMFLOAT3 INITCAMPOS{ 20, 25, 50 };
+const XMFLOAT3 INITCAMPOS{ 0, 5, -20 };
 
 
 //コンストラクタ
@@ -19,7 +19,7 @@ TestScene::TestScene(GameObject * parent)
 void TestScene::Initialize()
 {
 	Instantiate<Axis>(this);
-	player = Instantiate<AnimePlane>(this);
+	//player = Instantiate<AnimePlane>(this);
 	//Instantiate<Ground>(this);
 	camPos_ = INITCAMPOS;
 	Camera::SetPosition(camPos_);
