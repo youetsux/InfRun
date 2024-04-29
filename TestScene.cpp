@@ -6,7 +6,7 @@
 #include "Engine/Debug.h"
 #include "Ground.h"
 
-const XMFLOAT3 INITCAMPOS{ 0, 5, -205 };
+const XMFLOAT3 INITCAMPOS{ 0, 0.5, -1 };
 
 
 //コンストラクタ
@@ -24,7 +24,7 @@ void TestScene::Initialize()
 	Camera::SetPosition(camPos_);
 	XMFLOAT3 pos = player->GetWorldPosition();
 	//Camera::SetTarget({pos.x ,pos.y+1.0f, pos.z });
-	Camera::SetTarget({ 0,0,0 });
+	Camera::SetTarget({ 0, 0.2, 2 });
 }
 
 //更新

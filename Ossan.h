@@ -1,7 +1,8 @@
 #pragma once
 #include "Engine/GameObject.h"
 
-
+//IDLE 0-147
+//RUN 148-186
 
 enum OSS
 {
@@ -20,13 +21,13 @@ namespace
 	{
 		{0,0,1},{-1,0,0},{0,0,-1},{1,0,0},{0,0,0}
 	};
-	float MOVESPEED = 0.2f;
+	float MOVESPEED = 0.01f;
 	std::pair<int, int> OSFRAMES[MAXOSS]
 	{
-		{1,116},{117,191},{192,451}
+		{0,147},{148,186},{148,186}
 	};
 	const XMFLOAT3 INITDIR{ 0,0,1 };
-	const float ROTANGLE[5]{ 180, 90, 0, 270, 0 };
+	const float ROTANGLE[5]{ 0, -90, 180, 90, 0 };
 }
 
 

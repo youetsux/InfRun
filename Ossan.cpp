@@ -15,17 +15,24 @@ Ossan::Ossan(GameObject* parent)
 
 void Ossan::Initialize()
 {
-	hmodel_ = Model::Load("gamesmallman.fbx");
+	hmodel_ = Model::Load("man_run.fbx");
 	assert(hmodel_ >= 0);
-	transform_.scale_ = { 0.1,0.1,0.1 };
+	transform_.scale_ = { 0.1, 0.1, 0.1 };
 	transform_.position_ = { 0, 0, 0 };
-	Model::SetAnimFrame(hmodel_, OSFRAMES[ossanState_]. first, OSFRAMES[ossanState_].second, 1 );
+	Model::SetAnimFrame(hmodel_, OSFRAMES[ossanState_]. first, OSFRAMES[ossanState_].second, 1.5 );
 	cdtimer_ = new CDTimer(this, 5.0);
 }
 
 
 void Ossan::GetInputData()
 {
+	if (Input::IsKeyUp(DIK_W) || Input::IsKeyUp(DIK_A) || Input::IsKeyUp(DIK_S) || Input::IsKeyUp(DIK_D))
+	{
+		if (ossanState_ == RUN) {
+			Model::SetAnimFrame(hmodel_, OSFRAMES[IDLE].first, OSFRAMES[IDLE].second, 1);
+			ossanState_ = OSS::IDLE;
+		}
+	}
 	//moveDir_ = MOVEDIR::MAXDIR;
 	//ossanState_ = OSS::IDLE;
 	if (Input::IsKeyDown(DIK_W))
@@ -73,14 +80,6 @@ void Ossan::GetInputData()
 		ossanState_ = (OSS)((int)((ossanState_ + 1)%((int)MAXOSS)));
 		Model::SetAnimFrame(hmodel_, OSFRAMES[ossanState_].first, OSFRAMES[ossanState_].second, 1);
 	}
-	if (Input::IsKeyUp(DIK_W) || Input::IsKeyUp(DIK_A) || Input::IsKeyUp(DIK_S) || Input::IsKeyUp(DIK_D))
-	{
-		if (ossanState_ == RUN) {
-			Model::SetAnimFrame(hmodel_, OSFRAMES[IDLE].first, OSFRAMES[IDLE].second, 1);
-			ossanState_ = OSS::IDLE;
-		}
-	}
-	
 }
 
 XMVECTOR Ossan::GetMoveVec()
@@ -105,7 +104,7 @@ void Ossan::Update()
 			speed = 0;
 			break;
 		case OSS::RUN:
-			speed = MOVESPEED;
+			speed = 0;
 			break;
 		case OSS::DEFEET:
 			break;
