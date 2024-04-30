@@ -1,11 +1,19 @@
 #pragma once
 #include "Engine/GameObject.h"
+#include <vector>
+
+const int ROAD_NUM{ 15 };
+const float GSPEED{ 0.01 };
+
+
 
 //テストシーンを管理するクラス
 class Ground : public GameObject
 {
 
 	int hmodel_;
+	std::vector<Transform> gt;
+	float scrollSpeed_;
 public:
 	//コンストラクタ
 	//引数：parent  親オブジェクト（SceneManager）

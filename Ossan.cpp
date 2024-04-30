@@ -94,7 +94,7 @@ XMVECTOR Ossan::GetMoveVec()
 void Ossan::Update()
 {
 	//tr.rotate_.y += 0.5;
-	Ground* yuka = (Ground*)FindObject("Ground");
+	//Ground* yuka = (Ground*)FindObject("Ground");
 	
 	GetInputData();
 	float speed = MOVESPEED;
@@ -117,9 +117,10 @@ void Ossan::Update()
 	RayCastData p;
 	p.start = { this->transform_.position_.x, transform_.position_.y + 100, transform_.position_.z };
 	p.dir = { 0,-1,0 };
-	Model::RayCast(yuka->GetModelNum(), &p);
+	//Model::RayCast(yuka->GetModelNum(), &p);
 	//Debug::Log(p.hit, true);
-	tmpy = tmpy - p.dist + 100;
+	//tmpy = tmpy - p.dist + 100;
+	tmpy = 0;
 	tmp = XMVectorSetByIndex(tmp, tmpy, 1);
 
 	//cdtimer_->Update();
