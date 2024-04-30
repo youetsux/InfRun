@@ -6,7 +6,7 @@
 #include "Engine/Debug.h"
 #include "Ground.h"
 
-const XMFLOAT3 INITCAMPOS{ 0, 0.5, -1 };
+const XMFLOAT3 INITCAMPOS{ 0, 0.5, -1.0 };
 
 
 //コンストラクタ
@@ -18,10 +18,12 @@ TestScene::TestScene(GameObject * parent)
 //初期化
 void TestScene::Initialize()
 {
-	player = Instantiate<Ossan>(this);
+
 	Instantiate<Ground>(this);
 	camPos_ = INITCAMPOS;
 	Camera::SetPosition(camPos_);
+
+	player = Instantiate<Ossan>(this);
 	XMFLOAT3 pos = player->GetWorldPosition();
 	//Camera::SetTarget({pos.x ,pos.y+1.0f, pos.z });
 	Camera::SetTarget({ 0, 0.2, 2 });
