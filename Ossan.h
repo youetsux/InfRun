@@ -6,7 +6,7 @@
 
 enum OSS
 {
-	IDLE,RUN,DEFEET,MAXOSS
+	IDLE,RUN,DEFEET,TRAVERSAL,MAXOSS
 };
 
 class CDTimer;
@@ -24,10 +24,13 @@ namespace
 	float MOVESPEED = 0.01f;
 	std::pair<int, int> OSFRAMES[MAXOSS]
 	{
-		{0,147},{148,186},{148,186}
+		{0,147},{148,186},{148,186}, {0,147}
 	};
 	const XMFLOAT3 INITDIR{ 0,0,1 };
+	const XMFLOAT3 REF_POS[3]{ {-0.35, 0,0},{0,0,0}, {0.35,0,0} };
 	const float ROTANGLE[5]{ 0, -90, 180, 90, 0 };
+	enum OPOS_STATE{ OLEFT, OCENTER, ORIGHT, MAXPOS};
+	enum INPUT_STATE{ILEFT,IRIGHT, NONE, IMAX};
 }
 
 
@@ -47,6 +50,10 @@ class Ossan : public GameObject
 	MOVEDIR moveDir_;
 	OSS ossanState_;
 
+	OPOS_STATE posState_;
+	OPOS_STATE posSetter(INPUT_STATE inputDir);
+
+	bool isTraverasal() { return(ossanState_ == TRAVERSAL); }
 public:
 	//コンストラクタ
 	//引数：parent  親オブジェクト（SceneManager）

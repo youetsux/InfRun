@@ -18,7 +18,8 @@ void Ossan::Initialize()
 	hmodel_ = Model::Load("man_run.fbx");
 	assert(hmodel_ >= 0);
 	transform_.scale_ = { 0.1, 0.1, 0.1 };
-	transform_.position_ = { 0, 0, 0 };
+	transform_.position_ = { 0.0, 0.0, 0 };
+	posState_ = OCENTER;
 	Model::SetAnimFrame(hmodel_, OSFRAMES[ossanState_]. first, OSFRAMES[ossanState_].second, 1.5 );
 	cdtimer_ = new CDTimer(this, 5.0);
 }
@@ -26,60 +27,78 @@ void Ossan::Initialize()
 
 void Ossan::GetInputData()
 {
-	if (Input::IsKeyUp(DIK_W) || Input::IsKeyUp(DIK_A) || Input::IsKeyUp(DIK_S) || Input::IsKeyUp(DIK_D))
-	{
-		if (ossanState_ == RUN) {
-			Model::SetAnimFrame(hmodel_, OSFRAMES[IDLE].first, OSFRAMES[IDLE].second, 1);
-			ossanState_ = OSS::IDLE;
-		}
-	}
-	//moveDir_ = MOVEDIR::MAXDIR;
-	//ossanState_ = OSS::IDLE;
-	if (Input::IsKeyDown(DIK_W))
+	//if (Input::IsKeyUp(DIK_W) || Input::IsKeyUp(DIK_A) || Input::IsKeyUp(DIK_S) || Input::IsKeyUp(DIK_D))
+	//{
+	//	if (ossanState_ == RUN) {
+	//		Model::SetAnimFrame(hmodel_, OSFRAMES[IDLE].first, OSFRAMES[IDLE].second, 1);
+	//		ossanState_ = OSS::IDLE;
+	//	}
+	//}
+
+	//if (Input::IsKeyDown(DIK_W) )
+	//{
+	//	if (ossanState_ != RUN) {
+	//		ossanState_ = RUN;
+	//		Model::SetAnimFrame(hmodel_, OSFRAMES[RUN].first, OSFRAMES[RUN].second, 1);
+	//	}
+	//	moveDir_ = UP;
+	//}
+	if (Input::IsKeyDown(DIK_A) || Input::IsKeyDown(DIK_LEFT))
 	{
 		if (ossanState_ != RUN) {
 			ossanState_ = RUN;
 			Model::SetAnimFrame(hmodel_, OSFRAMES[RUN].first, OSFRAMES[RUN].second, 1);
 		}
+		posState_ = posSetter(ILEFT);
+
 		moveDir_ = UP;
 	}
-	if (Input::IsKeyDown(DIK_A))
+	//if (Input::IsKeyDown(DIK_S))
+	//{
+	//	if (ossanState_ != RUN) {
+	//		ossanState_ = RUN;
+	//		Model::SetAnimFrame(hmodel_, OSFRAMES[RUN].first, OSFRAMES[RUN].second, 1);
+	//	}
+	//	moveDir_ = DOWN;
+	//}
+	if (Input::IsKeyDown(DIK_D) || Input::IsKeyDown(DIK_RIGHT))
 	{
 		if (ossanState_ != RUN) {
 			ossanState_ = RUN;
 			Model::SetAnimFrame(hmodel_, OSFRAMES[RUN].first, OSFRAMES[RUN].second, 1);
 		}
-		moveDir_ = LEFT;
+		posState_ = posSetter(IRIGHT);
+	
+		moveDir_ = UP;
 	}
-	if (Input::IsKeyDown(DIK_S))
-	{
-		if (ossanState_ != RUN) {
-			ossanState_ = RUN;
-			Model::SetAnimFrame(hmodel_, OSFRAMES[RUN].first, OSFRAMES[RUN].second, 1);
-		}
-		moveDir_ = DOWN;
-	}
-	if (Input::IsKeyDown(DIK_D))
-	{
-		if (ossanState_ != RUN) {
-			ossanState_ = RUN;
-			Model::SetAnimFrame(hmodel_, OSFRAMES[RUN].first, OSFRAMES[RUN].second, 1);
-		}
-		moveDir_ = RIGHT;
-	}
-	if (Input::IsKeyDown(DIK_R))
-	{
-		transform_.rotate_.y -= 0.5f;
-	}
-	if (Input::IsKeyDown(DIK_T))
-	{
-		transform_.rotate_.y += 0.5f;
-	}
+
+	//if (Input::IsKeyDown(DIK_R))
+	//{
+	//	transform_.rotate_.y -= 0.5f;
+	//}
+	//if (Input::IsKeyDown(DIK_T))
+	//{
+	//	transform_.rotate_.y += 0.5f;
+	//}
+	transform_.position_ = REF_POS[posState_];
 	if (Input::IsKeyUp(DIK_SPACE))
 	{
 		ossanState_ = (OSS)((int)((ossanState_ + 1)%((int)MAXOSS)));
 		Model::SetAnimFrame(hmodel_, OSFRAMES[ossanState_].first, OSFRAMES[ossanState_].second, 1);
 	}
+}
+
+OPOS_STATE Ossan::posSetter(INPUT_STATE inputDir)
+{
+	int posTmp = (int)posState_;
+	int inputVal[3]{ -1, 1, 0 };
+	
+	posTmp = posTmp + inputVal[inputDir];
+	if (posTmp < 0)
+		posTmp = OPOS_STATE::OLEFT;
+	if (posTmp >= OPOS_STATE::MAXPOS)
+		posTmp = OPOS_STATE::ORIGHT;
+	return (OPOS_STATE)posTmp;
 }
 
 XMVECTOR Ossan::GetMoveVec()
@@ -112,24 +131,24 @@ void Ossan::Update()
 		default:
 			speed = 0;
 	}
-	XMVECTOR tmp = XMLoadFloat3(&transform_.position_) + speed * XMLoadFloat3(&MDVEC[moveDir_]);
-	float tmpy = XMVectorGetByIndex(tmp, 1);
-	RayCastData p;
-	p.start = { this->transform_.position_.x, transform_.position_.y + 100, transform_.position_.z };
-	p.dir = { 0,-1,0 };
-	//Model::RayCast(yuka->GetModelNum(), &p);
-	//Debug::Log(p.hit, true);
-	//tmpy = tmpy - p.dist + 100;
-	tmpy = 0;
-	tmp = XMVectorSetByIndex(tmp, tmpy, 1);
+	//XMVECTOR tmp = XMLoadFloat3(&transform_.position_) + speed * XMLoadFloat3(&MDVEC[moveDir_]);
+	//float tmpy = XMVectorGetByIndex(tmp, 1);
+	////RayCastData p;
+	////p.start = { this->transform_.position_.x, transform_.position_.y + 100, transform_.position_.z };
+	////p.dir = { 0,-1,0 };
+	////Model::RayCast(yuka->GetModelNum(), &p);
+	////Debug::Log(p.hit, true);
+	////tmpy = tmpy - p.dist + 100;
+	//tmpy = 0;
+	//tmp = XMVectorSetByIndex(tmp, tmpy, 1);
 
 	//cdtimer_->Update();
 	//Debug::Log((float)(cdtimer_->GetTime()), true);
 	//static double timerTime = 5.0;
 	//if (cdtimer_->IsTimeOver())
 	//	cdtimer_->SetInitTime(timerTime + 2.0);
-	XMStoreFloat3(&transform_.position_ ,tmp);
-	transform_.rotate_.y = ROTANGLE[moveDir_];
+	//XMStoreFloat3(&transform_.position_ ,tmp);
+	//transform_.rotate_.y = ROTANGLE[moveDir_];
 	//Model::SetAnimFrame(hmodel_, OSFRAMES[ossanState_].first, OSFRAMES[ossanState_].second, 1);
 }
 
