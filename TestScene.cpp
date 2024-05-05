@@ -5,8 +5,10 @@
 #include "Ossan.h"
 #include "Engine/Debug.h"
 #include "Ground.h"
+#include "Wanwan.h"
 
 const XMFLOAT3 INITCAMPOS{ 0, 0.5, -1.0 };
+//const XMFLOAT3 INITCAMPOS{ 0, 0.5, 0.1 };
 
 
 //コンストラクタ
@@ -25,8 +27,12 @@ void TestScene::Initialize()
 
 	player = Instantiate<Ossan>(this);
 	XMFLOAT3 pos = player->GetWorldPosition();
+
+	Instantiate<Wanwan>(this);
 	//Camera::SetTarget({pos.x ,pos.y+1.0f, pos.z });
 	Camera::SetTarget({ 0, 0.2, 2 });
+
+	//Camera::SetTarget({ 0, 0, 0 });
 }
 
 //更新

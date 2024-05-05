@@ -1,23 +1,35 @@
 #pragma once
 #include "Engine/GameObject.h"
-#include <vector>
-
-const int ROAD_NUM{ 25 };
-const float GSPEED{ 0.01 };
 
 
-
-//テストシーンを管理するクラス
-class Ground : public GameObject
+namespace
 {
+	enum WanwanSS
+	{
+		IDLE, MOVE, MAX
+	};
 
+
+	float INIT_SPEED = 0.01f;
+	std::pair<int, int> WANWANFRAMES[MAX]
+	{
+		{0,0}, { 0,40 }
+	};
+	}
+
+
+class Wanwan :
+    public GameObject
+{
 	int hmodel_;
-	std::vector<Transform> gt;
-	float scrollSpeed_;
+	WanwanSS wss_;
+
+	Transform wanwans[3];
+	float speed_;
 public:
 	//コンストラクタ
 	//引数：parent  親オブジェクト（SceneManager）
-	Ground(GameObject* parent);
+	Wanwan(GameObject* parent);
 
 	//初期化
 	void Initialize() override;
@@ -30,5 +42,5 @@ public:
 
 	//開放
 	void Release() override;
-	int GetModelNum() { return hmodel_; }
 };
+

@@ -12,14 +12,14 @@ Ground::Ground(GameObject* parent)
 
 void Ground::Initialize()
 {
-	hmodel_ = Model::Load("Ground.fbx");
+	hmodel_ = Model::Load("Ground_fix.fbx");
 	assert(hmodel_ >= 0);
 	for (int i = 0; i < ROAD_NUM; i++) {
 		Transform tmp;
-		tmp.scale_ = { 1,1,1.02 };
-		tmp.position_ = { 0,0,(float)(i*2)  };
-		if (i % 2)
-			tmp.position_.y -= 0.002;
+		tmp.scale_ = { 1, 1, 1 };
+		tmp.position_ = { 0, 0, (float)(i * 2)   };
+		/*if (i % 2)
+			tmp.position_.y -= 0.02;*/
 		gt.push_back(tmp);
 	}
 	scrollSpeed_ = GSPEED;
@@ -39,8 +39,9 @@ void Ground::Update()
 	if (totalMove >= 2.0)
 	{
 		if (gtNum == 0) {
-			scrollSpeed_ += 0.0025;
-			gtNum = 5;
+			if(scrollSpeed_< 2.0)
+				scrollSpeed_ += 0.0025;
+			gtNum = 10;
 		}
 		gt.erase(gt.begin());
 		Transform tmp;
