@@ -3,7 +3,7 @@
 #include <vector>
 
 const int ROAD_NUM{ 25 };
-const float GSPEED{ 0.01 };
+const float GSPEED{ 0.01f };
 
 
 

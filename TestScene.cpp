@@ -30,7 +30,7 @@ void TestScene::Initialize()
 
 	Instantiate<Wanwan>(this);
 	//Camera::SetTarget({pos.x ,pos.y+1.0f, pos.z });
-	Camera::SetTarget({ 0, 0.2, 2 });
+	Camera::SetTarget({ 0.0f, 0.2f, 2.0f });
 
 	//Camera::SetTarget({ 0, 0, 0 });
 }

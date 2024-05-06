@@ -5,6 +5,7 @@
 #include "TestScene.h"
 #include "CDTimer.h"
 #include "Ground.h"
+#include "DirectXMath.h"
 
 
 
@@ -17,32 +18,20 @@ void Ossan::Initialize()
 {
 	hmodel_ = Model::Load("man_run.fbx");
 	assert(hmodel_ >= 0);
-	transform_.scale_ = { 0.1, 0.1, 0.1 };
-	transform_.position_ = { 0.0, 0.0, 0 };
+	transform_.scale_ = { 0.1f, 0.1f, 0.1f };
+	transform_.position_ = { 0.0f, 0.0f, 0.0f };
 	posState_ = OCENTER;
 	Model::SetAnimFrame(hmodel_, OSFRAMES[ossanState_]. first, OSFRAMES[ossanState_].second, 1.5 );
-	cdtimer_ = new CDTimer(this, 5.0);
+	cdtimer_ = new CDTimer(this, TRAVERSAL_TIME);
 }
 
 
 void Ossan::GetInputData()
 {
-	//if (Input::IsKeyUp(DIK_W) || Input::IsKeyUp(DIK_A) || Input::IsKeyUp(DIK_S) || Input::IsKeyUp(DIK_D))
-	//{
-	//	if (ossanState_ == RUN) {
-	//		Model::SetAnimFrame(hmodel_, OSFRAMES[IDLE].first, OSFRAMES[IDLE].second, 1);
-	//		ossanState_ = OSS::IDLE;
-	//	}
-	//}
+	OPOS_STATE oldstate = posState_;
+	if (isTraverasal())
+		return;//ˆÚ“®’†‚È‚ç“ü—ÍŽó•t‚µ‚È‚¢
 
-	//if (Input::IsKeyDown(DIK_W) )
-	//{
-	//	if (ossanState_ != RUN) {
-	//		ossanState_ = RUN;
-	//		Model::SetAnimFrame(hmodel_, OSFRAMES[RUN].first, OSFRAMES[RUN].second, 1);
-	//	}
-	//	moveDir_ = UP;
-	//}
 	if (Input::IsKeyDown(DIK_A) || Input::IsKeyDown(DIK_LEFT))
 	{
 		if (ossanState_ != RUN) {
@@ -50,17 +39,13 @@ void Ossan::GetInputData()
 			Model::SetAnimFrame(hmodel_, OSFRAMES[RUN].first, OSFRAMES[RUN].second, 1);
 		}
 		posState_ = posSetter(ILEFT);
-
 		moveDir_ = UP;
+		if (posState_ != oldstate) {
+			ossanState_ = TRAVERSAL;
+			cdtimer_->ResetTimer();
+			cdtimer_->StartTimer();
+		}
 	}
-	//if (Input::IsKeyDown(DIK_S))
-	//{
-	//	if (ossanState_ != RUN) {
-	//		ossanState_ = RUN;
-	//		Model::SetAnimFrame(hmodel_, OSFRAMES[RUN].first, OSFRAMES[RUN].second, 1);
-	//	}
-	//	moveDir_ = DOWN;
-	//}
 	if (Input::IsKeyDown(DIK_D) || Input::IsKeyDown(DIK_RIGHT))
 	{
 		if (ossanState_ != RUN) {
@@ -68,19 +53,14 @@ void Ossan::GetInputData()
 			Model::SetAnimFrame(hmodel_, OSFRAMES[RUN].first, OSFRAMES[RUN].second, 1);
 		}
 		posState_ = posSetter(IRIGHT);
-	
 		moveDir_ = UP;
+		if (posState_ != oldstate) {
+			ossanState_ = TRAVERSAL;
+			cdtimer_->ResetTimer();
+			cdtimer_->StartTimer();
+		}
 	}
-
-	//if (Input::IsKeyDown(DIK_R))
-	//{
-	//	transform_.rotate_.y -= 0.5f;
-	//}
-	//if (Input::IsKeyDown(DIK_T))
-	//{
-	//	transform_.rotate_.y += 0.5f;
-	//}
-	transform_.position_ = REF_POS[posState_];
+	//transform_.position_ = REF_POS[posState_];
 	if (Input::IsKeyUp(DIK_SPACE))
 	{
 		ossanState_ = (OSS)((int)((ossanState_ + 1)%((int)MAXOSS)));
@@ -106,50 +86,51 @@ XMVECTOR Ossan::GetMoveVec()
 	static XMFLOAT3 oldPos = transform_.position_;
 	XMVECTOR mV = XMLoadFloat3(&transform_.position_) - XMLoadFloat3(&oldPos) ;
 	oldPos = transform_.position_;
-
 	return mV;
 }
 
 void Ossan::Update()
-{
-	//tr.rotate_.y += 0.5;
-	//Ground* yuka = (Ground*)FindObject("Ground");
-	
+{	
 	GetInputData();
 	float speed = MOVESPEED;
 
-	switch(ossanState_){
-		case OSS::IDLE:
-			speed = 0;
-			break;
-		case OSS::RUN:
-			speed = 0;
-			break;
-		case OSS::DEFEET:
-			break;
-		case OSS::MAXOSS:
-		default:
-			speed = 0;
-	}
-	//XMVECTOR tmp = XMLoadFloat3(&transform_.position_) + speed * XMLoadFloat3(&MDVEC[moveDir_]);
-	//float tmpy = XMVectorGetByIndex(tmp, 1);
-	////RayCastData p;
-	////p.start = { this->transform_.position_.x, transform_.position_.y + 100, transform_.position_.z };
-	////p.dir = { 0,-1,0 };
-	////Model::RayCast(yuka->GetModelNum(), &p);
-	////Debug::Log(p.hit, true);
-	////tmpy = tmpy - p.dist + 100;
-	//tmpy = 0;
-	//tmp = XMVectorSetByIndex(tmp, tmpy, 1);
+	cdtimer_->Update();
 
-	//cdtimer_->Update();
-	//Debug::Log((float)(cdtimer_->GetTime()), true);
-	//static double timerTime = 5.0;
-	//if (cdtimer_->IsTimeOver())
-	//	cdtimer_->SetInitTime(timerTime + 2.0);
-	//XMStoreFloat3(&transform_.position_ ,tmp);
-	//transform_.rotate_.y = ROTANGLE[moveDir_];
-	//Model::SetAnimFrame(hmodel_, OSFRAMES[ossanState_].first, OSFRAMES[ossanState_].second, 1);
+	float lerpTime = (float)(cdtimer_->GetTime());
+	if (lerpTime <= 0)
+	{
+		ossanState_ = RUN;
+		lerpTime = 0;
+	}
+
+	if (ossanState_ == TRAVERSAL) {
+		float lerpRate = 1.0f - lerpTime / TRAVERSAL_TIME;
+
+
+		XMVECTOR sourcePos = XMLoadFloat3(&transform_.position_);
+		XMVECTOR targetPos = XMLoadFloat3(&REF_POS[posState_]);
+		XMVECTOR lpos = XMVectorLerp(sourcePos, targetPos, lerpRate);
+
+		XMStoreFloat3(&(transform_.position_), lpos);
+	}
+	else
+	{
+		transform_.position_ = REF_POS[posState_];
+	}
+	//switch(ossanState_){
+	//	case OSS::IDLE:
+	//		speed = 0;
+	//		break;
+	//	case OSS::RUN:
+	//		speed = 0;
+	//		break;
+	//	case OSS::DEFEET:
+	//		break;
+	//	case OSS::MAXOSS:
+	//	default:
+	//		speed = 0;
+	//}
+
 }
 
 void Ossan::Draw()
