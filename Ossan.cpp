@@ -97,21 +97,32 @@ void Ossan::Update()
 	cdtimer_->Update();
 
 	float lerpTime = (float)(cdtimer_->GetTime());
+	static bool isMoving = false;
 	if (lerpTime <= 0)
 	{
 		ossanState_ = RUN;
 		lerpTime = 0;
+		isMoving = false;
 	}
 
 	if (ossanState_ == TRAVERSAL) {
 		float lerpRate = 1.0f - lerpTime / TRAVERSAL_TIME;
+		static XMVECTOR sourcePos, targetPos;
+		float rotAngle;
 
-
-		XMVECTOR sourcePos = XMLoadFloat3(&transform_.position_);
-		XMVECTOR targetPos = XMLoadFloat3(&REF_POS[posState_]);
+		if (isMoving == false) {
+			isMoving = true;
+			sourcePos = XMLoadFloat3(&transform_.position_);
+			targetPos = XMLoadFloat3(&REF_POS[posState_]);
+		}
 		XMVECTOR lpos = XMVectorLerp(sourcePos, targetPos, lerpRate);
 
+		rotAngle = TRAVERSAL_ANGLE * sin(lerpRate * XM_PI);
+		if (XMVectorGetX(sourcePos) > XMVectorGetX(targetPos))
+			rotAngle = -rotAngle;
+
 		XMStoreFloat3(&(transform_.position_), lpos);
+		transform_.rotate_.y = rotAngle;
 	}
 	else
 	{
