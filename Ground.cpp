@@ -39,8 +39,8 @@ void Ground::Update()
 	if (totalMove >= 2.0)
 	{
 		if (gtNum == 0) {
-			if(scrollSpeed_< 2.0)
-				scrollSpeed_ += 0.0025;
+			if(scrollSpeed_< 2.0f)
+				scrollSpeed_ += 0.0025f;
 			gtNum = 10;
 		}
 		gt.erase(gt.begin());
