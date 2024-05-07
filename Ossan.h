@@ -28,7 +28,8 @@ namespace
 	};
 	const XMFLOAT3 INITDIR{ 0,0,1 };
 	const XMFLOAT3 REF_POS[3]{ {-0.35f, 0.0f, 0.0f}, {0.0f,0.0f,0.0f}, {0.35f,0.0f,0.0f} };
-	const float TRAVERSAL_TIME{ 300.0f };
+	const float TRAVERSAL_TIME{ 1000.0f };
+	const float TR_ROTANGLE{ 80 };
 	const float ROTANGLE[5]{ 0, -90, 180, 90, 0 };
 	enum OPOS_STATE{ OLEFT, OCENTER, ORIGHT, MAXPOS};
 	enum INPUT_STATE{ILEFT,IRIGHT, NONE, IMAX};
@@ -50,6 +51,7 @@ class Ossan : public GameObject
 	void GetInputData();
 	MOVEDIR moveDir_;
 	OSS ossanState_;
+	OSS oldState_;
 
 	OPOS_STATE posState_;
 	OPOS_STATE posSetter(INPUT_STATE inputDir);

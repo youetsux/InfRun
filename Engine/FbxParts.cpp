@@ -3,6 +3,7 @@
 #include "Global.h"
 #include "Direct3D.h"
 #include "Camera.h"
+#include "Debug.h"
 
 //コンストラクタ
 FbxParts::FbxParts():
@@ -123,7 +124,6 @@ void FbxParts::InitVertex(fbxsdk::FbxMesh * mesh)
 	data_vertex.pSysMem = pVertexData_;
 	Direct3D::pDevice_->CreateBuffer(&bd_vertex, &data_vertex, &pVertexBuffer_);
 
-
 }
 
 //マテリアル準備
@@ -134,23 +134,33 @@ void FbxParts::InitMaterial(fbxsdk::FbxNode * pNode)
 	materialCount_ = pNode->GetMaterialCount();
 	pMaterial_ = new MATERIAL[materialCount_];
 
-
-
 	for (DWORD i = 0; i < materialCount_; i++)
 	{
 		ZeroMemory(&pMaterial_[i], sizeof(pMaterial_[i]));
 
 		// フォンシェーディングを想定したマテリアルバッファの抽出
 		FbxSurfaceMaterial* pMaterial = pNode->GetMaterial(i);
+
 		FbxSurfacePhong* pPhong = (FbxSurfacePhong*)pMaterial;
 
 		// 環境光＆拡散反射光＆鏡面反射光の反射成分値を取得
 		FbxDouble3  ambient = FbxDouble3(0, 0, 0);
 		FbxDouble3  diffuse = FbxDouble3(0, 0, 0);
 		FbxDouble3  specular = FbxDouble3(0, 0, 0);
-		ambient = pPhong->Ambient;
-		diffuse = pPhong->Diffuse;
-
+		// Ambientのプロパティを見つける
+		FbxProperty prop;
+		prop = pPhong->FindProperty(FbxSurfaceMaterial::sAmbient);
+		if (prop.IsValid())
+		{
+			//Debug::Log("Ambient OK", true);
+			ambient = pPhong->Ambient;
+		}
+		prop = pPhong->FindProperty(FbxSurfaceMaterial::sDiffuse);
+		if (prop.IsValid())
+		{
+			//Debug::Log("Diffuse OK", true);
+			diffuse = pPhong->Diffuse;
+		}
 
 
 		// 環境光＆拡散反射光＆鏡面反射光の反射成分値をマテリアルバッファにコピー
@@ -162,11 +172,25 @@ void FbxParts::InitMaterial(fbxsdk::FbxNode * pNode)
 
 		if (pMaterial->GetClassId().Is(FbxSurfacePhong::ClassId))
 		{
-			specular = pPhong->Specular;
-			pMaterial_[i].specular = XMFLOAT4((float)specular[0], (float)specular[1], (float)specular[2], 1.0f);
-			pMaterial_[i].shininess = (float)pPhong->Shininess;
-		}
+			prop = pPhong->FindProperty(FbxSurfaceMaterial::sSpecular);
+			if (prop.IsValid())
+			{
+				//Debug::Log("Specular OK", true);
+				specular = pPhong->Specular;
+			}
 
+			pMaterial_[i].specular = XMFLOAT4((float)specular[0], (float)specular[1], (float)specular[2], 1.0f);
+			prop = pPhong->FindProperty(FbxSurfaceMaterial::sShininess);
+			if (prop.IsValid())
+			{
+				//Debug::Log("Shininess OK", true);
+				pMaterial_[i].shininess = (float)pPhong->Shininess;
+			}
+			else
+				pMaterial_[i].shininess = (float)(1.0);
+
+	
+		}
 
 		InitTexture(pMaterial, i);
 
@@ -178,7 +202,6 @@ void FbxParts::InitMaterial(fbxsdk::FbxNode * pNode)
 void FbxParts::InitTexture(fbxsdk::FbxSurfaceMaterial * pMaterial, const DWORD &i)
 {
 	pMaterial_[i].pTexture = nullptr;
-
 
 	// テクスチャー情報の取得
 	FbxProperty  lProperty = pMaterial->FindProperty(FbxSurfaceMaterial::sDiffuse);
@@ -196,12 +219,8 @@ void FbxParts::InitTexture(fbxsdk::FbxSurfaceMaterial * pMaterial, const DWORD &
 		_splitpath_s(texture->GetRelativeFileName(), nullptr, 0, nullptr, 0, name, _MAX_FNAME, ext, _MAX_EXT);
 		wsprintf(name, "%s%s", name, ext);
 
-
-
 		pMaterial_[i].pTexture = new Texture;
 		pMaterial_[i].pTexture->Load(name);
-
-
 	}
 }
 
@@ -211,8 +230,6 @@ void FbxParts::InitIndex(fbxsdk::FbxMesh * mesh)
 	// マテリアルの数だけインデックスバッファーを作成
 	ppIndexBuffer_ = new ID3D11Buffer*[materialCount_];
 	ppIndexData_ = new DWORD*[materialCount_];
-
-	
 
 	int count = 0;
 
