@@ -31,12 +31,10 @@ void TestScene::Initialize()
 	player = Instantiate<Ossan>(this);
 	XMFLOAT3 pos = player->GetWorldPosition();
 
-	/*Instantiate<Wanwan>(this);*/
 	wang = Instantiate<wanwanGenerator>(this);
-	//Camera::SetTarget({pos.x ,pos.y+1.0f, pos.z });
 	Camera::SetTarget({ 0.0f, 0.2f, 2.0f });
 	timer_->StartTimer();
-	//Camera::SetTarget({ 0, 0, 0 });
+	wang->SetSpeed(0.05f);
 }
 
 //XV
