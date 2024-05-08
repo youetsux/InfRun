@@ -15,7 +15,8 @@ namespace
 	{
 		{0,0}, { 0,40 }
 	};
-	}
+
+}
 
 
 class Wanwan :

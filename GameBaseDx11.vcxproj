@@ -155,6 +155,7 @@
     <ClCompile Include="Ossan.cpp" />
     <ClCompile Include="TestScene.cpp" />
     <ClCompile Include="Wanwan.cpp" />
+    <ClCompile Include="wanwanGenerator.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="AnimePlane.h" />
@@ -187,6 +188,7 @@
     <ClInclude Include="Ossan.h" />
     <ClInclude Include="TestScene.h" />
     <ClInclude Include="Wanwan.h" />
+    <ClInclude Include="wanwanGenerator.h" />
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="Assets\Shader\BillBoard.hlsl">
