@@ -6,6 +6,7 @@
 #include "Engine/Debug.h"
 #include "Ground.h"
 #include "Wanwan.h"
+#include "wanwanGenerator.h"
 
 const XMFLOAT3 INITCAMPOS{ 0, 0.5, -1.0 };
 //const XMFLOAT3 INITCAMPOS{ 0, 0.5, 0.1 };
@@ -13,13 +14,15 @@ const XMFLOAT3 INITCAMPOS{ 0, 0.5, -1.0 };
 
 //コンストラクタ
 TestScene::TestScene(GameObject * parent)
-	: GameObject(parent, "TestScene")
+	: GameObject(parent, "TestScene"),timer_(nullptr)
 {
 }
 
 //初期化
 void TestScene::Initialize()
 {
+	timer_ = new CDTimer(this, GENTIME);
+
 
 	Instantiate<Ground>(this);
 	camPos_ = INITCAMPOS;
@@ -28,16 +31,24 @@ void TestScene::Initialize()
 	player = Instantiate<Ossan>(this);
 	XMFLOAT3 pos = player->GetWorldPosition();
 
-	Instantiate<Wanwan>(this);
+	/*Instantiate<Wanwan>(this);*/
+	wang = Instantiate<wanwanGenerator>(this);
 	//Camera::SetTarget({pos.x ,pos.y+1.0f, pos.z });
 	Camera::SetTarget({ 0.0f, 0.2f, 2.0f });
-
+	timer_->StartTimer();
 	//Camera::SetTarget({ 0, 0, 0 });
 }
 
 //更新
 void TestScene::Update()
 {
+	if (timer_->IsTimeOver())
+	{
+		wang->Generate();
+		timer_->ResetTimer();
+		timer_->StartTimer();
+	}
+	timer_->Update();
 	//XMVECTOR tVec = player->GetMoveVec();
 
 	//XMStoreFloat3(&camPos_, XMLoadFloat3(&camPos_) + tVec);

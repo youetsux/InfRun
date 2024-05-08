@@ -51,7 +51,7 @@ void CDTimer::Initialize()
 void CDTimer::Update()
 {
 	DWORD nowTime = timeGetTime();
-	static int deltaTime = nowTime - oldTime_;
+	int deltaTime = nowTime - oldTime_;
 	if (isTimerRun_)
 		CountDownTimer_ = CountDownTimer_ - (float)deltaTime/1000.0;
 	oldTime_ = nowTime;
