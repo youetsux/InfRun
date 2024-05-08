@@ -15,13 +15,13 @@ void Wanwan::Initialize()
 	transform_.position_ = { 0, 0.25, 20};
 	transform_.rotate_ = { 0, 180, 0 };
 	wss_ = WanwanSS::MOVE;
-	Model::SetAnimFrame(hmodel_, WANWANFRAMES[wss_].first, WANWANFRAMES[wss_].second, 1);
+	Model::SetAnimFrame(hmodel_, WANWANFRAMES[wss_].first, WANWANFRAMES[wss_].second, 0.1);
 
 }
 
 void Wanwan::Update()
 {
-	transform_.position_.z = transform_.position_.z - speed_;
+	//transform_.position_.z = transform_.position_.z - speed_;
 }
 
 void Wanwan::Draw()
