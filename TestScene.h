@@ -1,5 +1,7 @@
 #pragma once
 #include "Engine/GameObject.h"
+#include "CDTimer.h"
+#include "wanwanGenerator.h"
 
 class Ossan;
 //テストシーンを管理するクラス
@@ -7,6 +9,8 @@ class TestScene : public GameObject
 {
 	Ossan* player;
 	XMFLOAT3 camPos_;
+	CDTimer*timer_;
+	wanwanGenerator* wang;
 public:
 	//コンストラクタ
 	//引数：parent  親オブジェクト（SceneManager）

@@ -10,7 +10,7 @@
 
 
 Ossan::Ossan(GameObject* parent)
-	:GameObject(parent, "Ossan"), hmodel_(-1),moveDir_(MAXDIR),cdtimer_(nullptr),ossanState_(IDLE),oldState_(IDLE)
+	:GameObject(parent, "Ossan"), hmodel_(-1),moveDir_(MAXDIR),cdtimer_(nullptr),ossanState_(OSS::IDLE),oldState_(OSS::IDLE)
 {
 }
 
