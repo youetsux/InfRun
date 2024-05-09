@@ -8,7 +8,7 @@ Wanwan::Wanwan(GameObject* parent)
 
 void Wanwan::Initialize()
 {
-	hmodel_ = Model::Load("cchomp.fbx");
+	hmodel_ = Model::Load("cchomp2.fbx");
 	assert(hmodel_ >= 0);
 
 	transform_.scale_ = { 0.1, 0.1, 0.1 };
