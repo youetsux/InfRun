@@ -4,11 +4,12 @@
 #include "wanwanGenerator.h"
 
 class Ossan;
-class AnimePlane;
+class Ground;
 //テストシーンを管理するクラス
 class TestScene : public GameObject
 {
-	AnimePlane* player;
+	Ossan* player;
+	Ground* ground;
 	XMFLOAT3 camPos_;
 	CDTimer*timer_;
 	wanwanGenerator* wang;

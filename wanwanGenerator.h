@@ -9,7 +9,7 @@ using std::vector;
 namespace {
 	std::pair<int, int> GENPAIR[] = { {1,2},{0,2},{0,1} };
 	const XMFLOAT3 WAN_POS[3]{ {-0.35f, 0.1f, 20.0f}, {0.0f,0.1f,20.0f}, {0.35f,0.1f,20.0f} };
-	const float GENTIME{ 1.0 };
+	const float GENTIME{ 2.0 };//ŽžŠÔ‚¶‚á‚È‚­‹——£‚É‚µ‚½•û‚ª‚¢‚¢‚©‚à
 }
 
 class wanwanGenerator :

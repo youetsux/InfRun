@@ -18,8 +18,6 @@ void Ground::Initialize()
 		Transform tmp;
 		tmp.scale_ = { 1, 1, 1 };
 		tmp.position_ = { 0, 0, (float)(i * 2)   };
-		/*if (i % 2)
-			tmp.position_.y -= 0.02;*/
 		gt.push_back(tmp);
 	}
 	scrollSpeed_ = GSPEED;
