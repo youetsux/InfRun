@@ -31,4 +31,5 @@ public:
 	//ŠJ•ú
 	void Release() override;
 	int GetModelNum() { return hmodel_; }
+	float GetGroundSpeed() { return(scrollSpeed_); }
 };
