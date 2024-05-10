@@ -8,8 +8,7 @@
 #include "Wanwan.h"
 #include "wanwanGenerator.h"
 
-
-const XMFLOAT3 INITCAMPOS{ 0, 0.5, -1.0 };
+const XMFLOAT3 INITCAMPOS{ 0, 1, -1.5 };
 //const XMFLOAT3 INITCAMPOS{ 0, 0.5, 0.1 };
 
 
@@ -25,7 +24,7 @@ void TestScene::Initialize()
 	timer_ = new CDTimer(this, GENTIME);
 
 
-	ground = Instantiate<Ground>(this);
+	Instantiate<Ground>(this);
 	camPos_ = INITCAMPOS;
 	Camera::SetPosition(camPos_);
 
@@ -41,15 +40,20 @@ void TestScene::Initialize()
 //XV
 void TestScene::Update()
 {
-	wang->SetSpeed(ground->GetGroundSpeed());
 	if (timer_->IsTimeOver())
 	{
-		Debug::Log("Generate", true);
 		wang->Generate();
 		timer_->ResetTimer();
 		timer_->StartTimer();
 	}
 	timer_->Update();
+	//XMVECTOR tVec = player->GetMoveVec();
+
+	//XMStoreFloat3(&camPos_, XMLoadFloat3(&camPos_) + tVec);
+	//XMFLOAT3 pos = player->GetWorldPosition();
+
+	//Camera::SetPosition(camPos_);
+	//Camera::SetTarget({ pos.x ,pos.y + 0.5f, pos.z });
 }
 
 //•`‰æ//
