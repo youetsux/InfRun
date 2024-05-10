@@ -8,14 +8,14 @@ Wanwan::Wanwan(GameObject* parent)
 
 void Wanwan::Initialize()
 {
-	hmodel_ = Model::Load("cchomp2.fbx");
+	hmodel_ = Model::Load("cchomp3.fbx");
 	assert(hmodel_ >= 0);
 
 	transform_.scale_ = { 0.1, 0.1, 0.1 };
-	transform_.position_ = { 0, 0.25, 20};
+	transform_.position_ = { 0, 0.15, 20};
 	transform_.rotate_ = { 0, 180, 0 };
 	wss_ = WanwanSS::MOVE;
-	Model::SetAnimFrame(hmodel_, WANWANFRAMES[wss_].first, WANWANFRAMES[wss_].second, 0.1);
+	Model::SetAnimFrame(hmodel_, WANWANFRAMES[wss_].first, WANWANFRAMES[wss_].second, 0.5);
 
 }
 

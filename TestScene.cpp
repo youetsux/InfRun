@@ -8,7 +8,7 @@
 #include "Wanwan.h"
 #include "wanwanGenerator.h"
 
-const XMFLOAT3 INITCAMPOS{ 0, 0.5, -1.0 };
+const XMFLOAT3 INITCAMPOS{ 0, 1, -1.5 };
 //const XMFLOAT3 INITCAMPOS{ 0, 0.5, 0.1 };
 
 
