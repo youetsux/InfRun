@@ -74,7 +74,6 @@ namespace Model
 			return;
 		}
 
-
 		//アニメーションを進める
 		if (!_datas[handle]->isRenderInThisFrame) {
 			_datas[handle]->nowFrame += _datas[handle]->animSpeed;
