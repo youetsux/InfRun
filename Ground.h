@@ -14,6 +14,7 @@ class Ground : public GameObject
 	int hmodel_;
 	std::vector<Transform> gt;
 	float scrollSpeed_;
+	
 public:
 	//コンストラクタ
 	//引数：parent  親オブジェクト（SceneManager）
@@ -31,4 +32,5 @@ public:
 	//開放
 	void Release() override;
 	int GetModelNum() { return hmodel_; }
+	void SetScroolSpeed(float _speed) { scrollSpeed_ = _speed; }
 };

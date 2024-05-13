@@ -7,22 +7,49 @@
 #include "Ground.h"
 #include "Wanwan.h"
 #include "wanwanGenerator.h"
+#include "Engine/Debug.h"
 
-const XMFLOAT3 INITCAMPOS{ 0, 1, -1.5 };
-//const XMFLOAT3 INITCAMPOS{ 0, 0.5, 0.1 };
 
+namespace {
+	const XMFLOAT3 INITCAMPOS{ 0, 1, -1.5 };
+	//const XMFLOAT3 INITCAMPOS{ 0, 0.5, 0.1 };
+}
+
+
+
+void TestScene::PlayUpdate()
+{
+	if (timer_->IsTimeOver())
+	{
+		wang->Generate();
+		timer_->ResetTimer();
+		timer_->StartTimer();
+	}
+	timer_->Update();
+}
+
+void TestScene::ReadyUpdate()
+{
+	Debug::Log((float)(timer_->GetTime()), true);
+	if (timer_->IsTimeOver())
+	{
+		PSTATE = PLAY;
+		timer_->SetInitTime(PSTATE);
+		timer_->StartTimer();
+	}
+	timer_->Update();
+}
 
 //コンストラクタ
 TestScene::TestScene(GameObject * parent)
-	: GameObject(parent, "TestScene"),timer_(nullptr)
+	: GameObject(parent, "TestScene"),timer_(nullptr),PSTATE(READY)
 {
 }
 
 //初期化
 void TestScene::Initialize()
 {
-	timer_ = new CDTimer(this, GENTIME);
-
+	timer_ = new CDTimer(this, GPERIODS[READY]);
 
 	Instantiate<Ground>(this);
 	camPos_ = INITCAMPOS;
@@ -37,23 +64,23 @@ void TestScene::Initialize()
 	wang->SetSpeed(0.05f);
 }
 
+
 //更新
 void TestScene::Update()
 {
-	if (timer_->IsTimeOver())
+	switch (PSTATE)
 	{
-		wang->Generate();
-		timer_->ResetTimer();
-		timer_->StartTimer();
+	case READY:
+		ReadyUpdate();
+		break;
+	case PLAY:
+		PlayUpdate();
+		break;
+	case DEAD:
+		break;
+	default:
+		return;
 	}
-	timer_->Update();
-	//XMVECTOR tVec = player->GetMoveVec();
-
-	//XMStoreFloat3(&camPos_, XMLoadFloat3(&camPos_) + tVec);
-	//XMFLOAT3 pos = player->GetWorldPosition();
-
-	//Camera::SetPosition(camPos_);
-	//Camera::SetTarget({ pos.x ,pos.y + 0.5f, pos.z });
 }
 
 //描画//

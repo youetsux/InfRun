@@ -3,6 +3,17 @@
 #include "CDTimer.h"
 #include "wanwanGenerator.h"
 
+
+namespace
+{
+	enum PLAYSTATE
+	{
+		READY, PLAY, DEAD, PMAX
+	};
+	const float GPERIODS[PMAX]{ 25.0, 1.0, 5.0 };
+}
+
+
 class Ossan;
 //テストシーンを管理するクラス
 class TestScene : public GameObject
@@ -11,6 +22,12 @@ class TestScene : public GameObject
 	XMFLOAT3 camPos_;
 	CDTimer*timer_;
 	wanwanGenerator* wang;
+	PLAYSTATE PSTATE;
+
+public:
+	void PlayUpdate();
+	void ReadyUpdate();
+
 public:
 	//コンストラクタ
 	//引数：parent  親オブジェクト（SceneManager）
