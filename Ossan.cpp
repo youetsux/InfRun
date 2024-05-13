@@ -131,6 +131,7 @@ void Ossan::Update()
 		transform_.rotate_.y = 0.0f;
 		transform_.position_ = REF_POS[posState_];
 	}
+	Model::ResetAnimeRenderState(hmodel_);
 	cdtimer_->Update();
 
 }

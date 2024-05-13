@@ -26,10 +26,10 @@ namespace Model
 		//アニメーションのフレーム
 		float nowFrame, animSpeed;
 		int startFrame, endFrame;
-
+		bool isRenderInThisFrame;
 
 		//初期化
-		ModelData() : pFbx(nullptr), nowFrame(0), startFrame(0), endFrame(0), animSpeed(0)
+		ModelData() : pFbx(nullptr), nowFrame(0), startFrame(0), endFrame(0), animSpeed(0),isRenderInThisFrame(false)
 		{
 		}
 
@@ -44,6 +44,8 @@ namespace Model
 			endFrame = end;
 			animSpeed = speed;
 		}
+
+		void ResetAnimeRenderState() { isRenderInThisFrame = false; }
 	};
 
 
@@ -59,6 +61,9 @@ namespace Model
 	//引数：handle	描画したいモデルの番号
 	//引数：matrix	ワールド行列
 	void Draw(int handle);
+
+
+	void ResetAnimeRenderState(int handle);
 
 	//任意のモデルを開放
 	//引数：handle	開放したいモデルの番号
