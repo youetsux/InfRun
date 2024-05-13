@@ -33,8 +33,9 @@ wanwanGenerator::wanwanGenerator(GameObject* parent)
 
 void wanwanGenerator::Initialize()
 {
-	wan_ = new Wanwan(this->GetParent());
-	wan_->Initialize();
+	//wan_ = new Wanwan(this->GetParent());
+	wan_ = Instantiate<Wanwan>(this->GetParent());
+	//wan_->Initialize();
 }
 
 void wanwanGenerator::Update()
