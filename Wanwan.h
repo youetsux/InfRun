@@ -13,7 +13,7 @@ namespace
 	float INIT_SPEED = 0.01f;
 	std::pair<int, int> WANWANFRAMES[MAX]
 	{
-		{0,0}, { 0,40 }
+		{0,0}, { 0,120 }
 	};
 
 }
