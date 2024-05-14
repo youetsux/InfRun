@@ -2,7 +2,7 @@
 #include "Engine/GameObject.h"
 #include "CDTimer.h"
 #include "wanwanGenerator.h"
-
+#include "Engine/Image.h"
 
 namespace
 {
@@ -19,6 +19,7 @@ class Ground;
 //テストシーンを管理するクラス
 class TestScene : public GameObject
 {
+	int msgBoard_;
 	Ossan* player;
 	Ground* ground;
 	XMFLOAT3 camPos_;

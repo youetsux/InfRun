@@ -13,6 +13,7 @@
 namespace {
 	const XMFLOAT3 INITCAMPOS{ 0, 1, -1.5 };
 	//const XMFLOAT3 INITCAMPOS{ 0, 0.5, 0.1 };
+	
 }
 
 
@@ -30,7 +31,7 @@ void TestScene::PlayUpdate()
 
 void TestScene::ReadyUpdate()
 {
-
+	
 	if (timer_->IsTimeOver())
 	{
 		PSTATE = PLAY;
@@ -42,18 +43,20 @@ void TestScene::ReadyUpdate()
 		timer_->SetInitTime(GPERIODS[PSTATE]);
 		timer_->StartTimer();
 	}
+	
 	timer_->Update();
 }
 
 //コンストラクタ
 TestScene::TestScene(GameObject * parent)
-	: GameObject(parent, "TestScene"),timer_(nullptr),PSTATE(READY)
+	: GameObject(parent, "TestScene"),timer_(nullptr),PSTATE(READY),msgBoard_(-1)
 {
 }
 
 //初期化
 void TestScene::Initialize()
 {
+	msgBoard_ = Image::Load("ready.png");
 	timer_ = new CDTimer(this, GPERIODS[READY]);
 
 	ground = Instantiate<Ground>(this);
@@ -88,6 +91,24 @@ void TestScene::Update()
 //描画//
 void TestScene::Draw()
 {
+	switch (PSTATE)
+	{
+	case READY:
+	{
+		Transform t;
+		t.position_ = { 0,0.5, 0 };
+		Image::SetTransform(msgBoard_, t);
+		Image::Draw(msgBoard_);
+	}
+		break;
+	case PLAY:
+		break;
+	case DEAD:
+		break;
+	default:
+		return;
+	}
+	
 }
 
 //開放
