@@ -21,7 +21,7 @@ void Wanwan::Initialize()
 
 void Wanwan::Update()
 {
-	Model::ResetAnimeRenderState(hmodel_);
+	//Model::ResetAnimeRenderState(hmodel_);
 	//transform_.position_.z = transform_.position_.z - speed_;
 }
 

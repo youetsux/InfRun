@@ -30,11 +30,14 @@ void TestScene::PlayUpdate()
 
 void TestScene::ReadyUpdate()
 {
-	Debug::Log((float)(timer_->GetTime()), true);
+
 	if (timer_->IsTimeOver())
 	{
 		PSTATE = PLAY;
-		timer_->SetInitTime(PSTATE);
+		player->
+		wang = Instantiate<wanwanGenerator>(this);
+		wang->SetSpeed(0.1f);
+		timer_->SetInitTime(GPERIODS[PSTATE]);
 		timer_->StartTimer();
 	}
 	timer_->Update();
@@ -57,11 +60,8 @@ void TestScene::Initialize()
 
 	player = Instantiate<Ossan>(this);
 	XMFLOAT3 pos = player->GetWorldPosition();
-
-	wang = Instantiate<wanwanGenerator>(this);
 	Camera::SetTarget({ 0.0f, 0.2f, 2.0f });
-	timer_->StartTimer();
-	wang->SetSpeed(0.05f);
+	
 }
 
 

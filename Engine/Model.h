@@ -29,7 +29,7 @@ namespace Model
 		bool isRenderInThisFrame;
 
 		//初期化
-		ModelData() : pFbx(nullptr), nowFrame(0), startFrame(0), endFrame(0), animSpeed(0),isRenderInThisFrame(false)
+		ModelData() : pFbx(nullptr), nowFrame(0), startFrame(0), endFrame(0), animSpeed(0)
 		{
 		}
 
@@ -45,7 +45,7 @@ namespace Model
 			animSpeed = speed;
 		}
 
-		void ResetAnimeRenderState() { isRenderInThisFrame = false; }
+		//void ResetAnimeRenderState() { isRenderInThisFrame = false; }
 	};
 
 
@@ -63,7 +63,7 @@ namespace Model
 	void Draw(int handle);
 
 
-	void ResetAnimeRenderState(int handle);
+	//void ResetAnimeRenderState(int handle);
 
 	//任意のモデルを開放
 	//引数：handle	開放したいモデルの番号

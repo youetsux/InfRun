@@ -75,10 +75,10 @@ namespace Model
 		}
 
 		//アニメーションを進める
-		if (!_datas[handle]->isRenderInThisFrame) {
-			_datas[handle]->nowFrame += _datas[handle]->animSpeed;
-			_datas[handle]->isRenderInThisFrame = true;
-		}
+		//if (!_datas[handle]->isRenderInThisFrame) {
+		_datas[handle]->nowFrame += _datas[handle]->animSpeed;
+		//	_datas[handle]->isRenderInThisFrame = true;
+	//	}
 
 		//最後までアニメーションしたら戻す
 		if (_datas[handle]->nowFrame > (float)_datas[handle]->endFrame)
@@ -92,15 +92,15 @@ namespace Model
 		}
 	}
 
-	void ResetAnimeRenderState(int handle)
-	{
-		if (handle < 0 || handle >= _datas.size() || _datas[handle] == nullptr)
-		{
-			return;
-		}
+	//void ResetAnimeRenderState(int handle)
+	//{
+	//	if (handle < 0 || handle >= _datas.size() || _datas[handle] == nullptr)
+	//	{
+	//		return;
+	//	}
 
-		_datas[handle]->ResetAnimeRenderState();
-	}
+	//	_datas[handle]->ResetAnimeRenderState();
+	//}
 
 
 	//任意のモデルを開放
