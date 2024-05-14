@@ -1,12 +1,8 @@
 #include "Ground.h"
 #include "Engine/Model.h"
 
-
-
-
-
 Ground::Ground(GameObject* parent)
-	:GameObject(parent,"Ground"), hmodel_(-1)
+	:GameObject(parent, "Ground"), hmodel_(-1), isScroll_(false)
 {
 }
 
@@ -14,6 +10,7 @@ void Ground::Initialize()
 {
 	hmodel_ = Model::Load("Ground_fix.fbx");
 	assert(hmodel_ >= 0);
+
 	for (int i = 0; i < ROAD_NUM; i++) {
 		Transform tmp;
 		tmp.scale_ = { 1, 1, 1 };
@@ -28,6 +25,9 @@ void Ground::Initialize()
 
 void Ground::Update()
 {
+	if (!isScroll_)
+		return;
+
 	static float totalMove = 0;
 	static int gtNum = 10;
 	for (int i = 0; i < ROAD_NUM; i++) {
@@ -38,7 +38,7 @@ void Ground::Update()
 	{
 		if (gtNum == 0) {
 			if(scrollSpeed_< 2.0f)
-				scrollSpeed_ += 0.0025f;
+				scrollSpeed_ += 0.005f;
 			gtNum = 10;
 		}
 		gt.erase(gt.begin());

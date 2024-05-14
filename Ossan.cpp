@@ -14,6 +14,15 @@ Ossan::Ossan(GameObject* parent)
 {
 }
 
+void Ossan::SetIdleState() {
+	ossanState_ = OSS::IDLE; Model::SetAnimFrame(hmodel_, OSFRAMES[ossanState_].first, OSFRAMES[ossanState_].second, 1);
+}
+void Ossan::SetRunState() {
+	ossanState_ = OSS::RUN; Model::SetAnimFrame(hmodel_, OSFRAMES[ossanState_].first, OSFRAMES[ossanState_].second, 1);
+}
+void Ossan::SetDefeetState() { ossanState_ = OSS::DEFEET; }
+void Ossan::SetTraversalState() { ossanState_ = OSS::TRAVERSAL; }
+
 void Ossan::Initialize()
 {
 	hmodel_ = Model::Load("man_run.fbx");

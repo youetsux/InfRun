@@ -34,9 +34,11 @@ void TestScene::ReadyUpdate()
 	if (timer_->IsTimeOver())
 	{
 		PSTATE = PLAY;
-		player->
+		player->SetRunState();
+		ground->StartScroll();
 		wang = Instantiate<wanwanGenerator>(this);
 		wang->SetSpeed(0.1f);
+		
 		timer_->SetInitTime(GPERIODS[PSTATE]);
 		timer_->StartTimer();
 	}
