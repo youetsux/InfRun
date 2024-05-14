@@ -75,7 +75,10 @@ namespace Model
 		}
 
 		//アニメーションを進める
-		_datas[handle]->nowFrame += _datas[handle]->animSpeed;
+		if (!_datas[handle]->isRenderInThisFrame) {
+			_datas[handle]->nowFrame += _datas[handle]->animSpeed;
+			_datas[handle]->isRenderInThisFrame = true;
+		}
 
 		//最後までアニメーションしたら戻す
 		if (_datas[handle]->nowFrame > (float)_datas[handle]->endFrame)
@@ -87,6 +90,16 @@ namespace Model
 		{
 			_datas[handle]->pFbx->Draw(_datas[handle]->transform, (int)_datas[handle]->nowFrame);
 		}
+	}
+
+	void ResetAnimeRenderState(int handle)
+	{
+		if (handle < 0 || handle >= _datas.size() || _datas[handle] == nullptr)
+		{
+			return;
+		}
+
+		_datas[handle]->ResetAnimeRenderState();
 	}
 
 

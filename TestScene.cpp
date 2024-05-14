@@ -7,23 +7,49 @@
 #include "Ground.h"
 #include "Wanwan.h"
 #include "wanwanGenerator.h"
+#include "Engine/Debug.h"
 
 
-const XMFLOAT3 INITCAMPOS{ 0, 0.5, -1.0 };
-//const XMFLOAT3 INITCAMPOS{ 0, 0.5, 0.1 };
+namespace {
+	const XMFLOAT3 INITCAMPOS{ 0, 1, -1.5 };
+	//const XMFLOAT3 INITCAMPOS{ 0, 0.5, 0.1 };
+}
 
+
+
+void TestScene::PlayUpdate()
+{
+	if (timer_->IsTimeOver())
+	{
+		wang->Generate();
+		timer_->ResetTimer();
+		timer_->StartTimer();
+	}
+	timer_->Update();
+}
+
+void TestScene::ReadyUpdate()
+{
+	Debug::Log((float)(timer_->GetTime()), true);
+	if (timer_->IsTimeOver())
+	{
+		PSTATE = PLAY;
+		timer_->SetInitTime(PSTATE);
+		timer_->StartTimer();
+	}
+	timer_->Update();
+}
 
 //コンストラクタ
 TestScene::TestScene(GameObject * parent)
-	: GameObject(parent, "TestScene"),timer_(nullptr)
+	: GameObject(parent, "TestScene"),timer_(nullptr),PSTATE(READY)
 {
 }
 
 //初期化
 void TestScene::Initialize()
 {
-	timer_ = new CDTimer(this, GENTIME);
-
+	timer_ = new CDTimer(this, GPERIODS[READY]);
 
 	ground = Instantiate<Ground>(this);
 	camPos_ = INITCAMPOS;
@@ -38,18 +64,23 @@ void TestScene::Initialize()
 	wang->SetSpeed(0.05f);
 }
 
+
 //更新
 void TestScene::Update()
 {
-	wang->SetSpeed(ground->GetGroundSpeed());
-	if (timer_->IsTimeOver())
+	switch (PSTATE)
 	{
-		Debug::Log("Generate", true);
-		wang->Generate();
-		timer_->ResetTimer();
-		timer_->StartTimer();
+	case READY:
+		ReadyUpdate();
+		break;
+	case PLAY:
+		PlayUpdate();
+		break;
+	case DEAD:
+		break;
+	default:
+		return;
 	}
-	timer_->Update();
 }
 
 //描画//
