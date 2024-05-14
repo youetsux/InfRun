@@ -26,7 +26,7 @@ void wanwanGenerator::SetSpeed(float _speed)
 
 
 wanwanGenerator::wanwanGenerator(GameObject* parent)
-	:GameObject(parent, "WG"), isGenerated_(false), oldLane_(1), speed_(0),wan_(nullptr)
+	:GameObject(parent, "WG"), isGenerated_(false), oldLane_(1), speed_(0)
 {
 	spaceLane_ = rand() % 3;
 }
@@ -34,20 +34,24 @@ wanwanGenerator::wanwanGenerator(GameObject* parent)
 void wanwanGenerator::Initialize()
 {
 	//wan_ = new Wanwan(this->GetParent());
-	wan_ = Instantiate<Wanwan>(this->GetParent());
+	//wan_ = Instantiate<Wanwan>(this->GetParent());
 	//wan_->Initialize();
 }
 
 void wanwanGenerator::Update()
 {
 	if (!isGenerated_) {
+		Wanwan* w[2]{ nullptr, nullptr };
+		for (int i = 0; i < 2; i++)
+			w[i] = Instantiate<Wanwan>(this->GetParent());
 		oldLane_ = spaceLane_;
 		spaceLane_ = GenerateNum(oldLane_);
-		Transform wpos[2];
-		wpos[0].position_ = WAN_POS[GENPAIR[spaceLane_].first];
-		wpos[1].position_ = WAN_POS[GENPAIR[spaceLane_].second];
-		wanList.push_back(wpos[0]);
-		wanList.push_back(wpos[1]);
+		
+		w[0]->SetPosition(WAN_POS[GENPAIR[spaceLane_].first]);
+		w[1]->SetPosition(WAN_POS[GENPAIR[spaceLane_].second]);
+		
+		wanList.push_back(w[0]);
+		wanList.push_back(w[1]);
 
 		isGenerated_ = true;
 	}
@@ -55,15 +59,20 @@ void wanwanGenerator::Update()
 	for (auto& theI : wanList)
 	{
 		XMVECTOR mv{ 0,0,-1 };
-		XMVECTOR tmp = XMLoadFloat3(&(theI.position_));
+		XMFLOAT3 fl3tmp = theI->GetPosition();
+		XMVECTOR tmp = XMLoadFloat3(&fl3tmp);
 		tmp = tmp + speed_ * mv;
-		XMStoreFloat3(&(theI.position_), tmp);
+		
+		XMStoreFloat3(&(fl3tmp), tmp);
+		theI->SetPosition(fl3tmp);
 	}
+	Debug::Log((int)wanList.size(), true);
 	auto itr = wanList.begin();
 	while (itr != wanList.end())
 	{
-		if (itr->position_.z < 0)
+		if ((*itr)->GetPosition().z < 0)
 		{
+			(*itr)->KillMe();
 			itr = wanList.erase(itr);
 		}
 		else
@@ -76,11 +85,11 @@ void wanwanGenerator::Update()
 
 void wanwanGenerator::Draw()
 {
-	for (auto& theI : wanList)
-	{
-		wan_->SetPosition(theI.position_);
-		wan_->Draw();
-	}
+	//for (auto& theI : wanList)
+	//{
+	//	wan_->SetPosition(theI.position_);
+	//	wan_->Draw();
+	//}
 }
 
 void wanwanGenerator::Release()

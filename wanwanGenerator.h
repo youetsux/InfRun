@@ -19,9 +19,7 @@ class wanwanGenerator :
 	int spaceLane_;
 	int oldLane_;
 	int GenerateNum(int _n);
-	//vector<Wanwan*> wanList;
-	vector<Transform> wanList;
-	Wanwan* wan_;
+	vector<Wanwan*> wanList;
 	float speed_;
 public:
 	void Generate();

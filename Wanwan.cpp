@@ -8,7 +8,7 @@ Wanwan::Wanwan(GameObject* parent)
 
 void Wanwan::Initialize()
 {
-	hmodel_ = Model::Load("cchomp2.fbx");
+	hmodel_ = Model::Load("cchomp3.fbx");
 	assert(hmodel_ >= 0);
 
 	transform_.scale_ = { 0.15, 0.15, 0.15 };
@@ -21,7 +21,7 @@ void Wanwan::Initialize()
 
 void Wanwan::Update()
 {
-	Model::ResetAnimeRenderState(hmodel_);
+	//Model::ResetAnimeRenderState(hmodel_);
 	//transform_.position_.z = transform_.position_.z - speed_;
 }
 
