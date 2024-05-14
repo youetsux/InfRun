@@ -6,7 +6,7 @@
 
 enum OSS
 {
-	IDLE,RUN,DEFEET,TRAVERSAL,MAXOSS
+	IDLE, RUN, DEFEET, TRAVERSAL, MAXOSS
 };
 
 class CDTimer;
@@ -28,8 +28,8 @@ namespace
 	};
 	const XMFLOAT3 INITDIR{ 0,0,1 };
 	const XMFLOAT3 REF_POS[3]{ {-0.35f, 0.0f, 0.0f}, {0.0f,0.0f,0.0f}, {0.35f,0.0f,0.0f} };
-	const float TRAVERSAL_TIME{ 0.25f };
-	const float TR_ROTANGLE{ 80 };
+	const float TRAVERSAL_TIME{ 0.5f };
+	const float TR_ROTANGLE{ 75 };
 	const float ROTANGLE[5]{ 0, -90, 180, 90, 0 };
 	enum OPOS_STATE{ OLEFT, OCENTER, ORIGHT, MAXPOS};
 	enum INPUT_STATE{ILEFT,IRIGHT, NONE, IMAX};
@@ -73,6 +73,11 @@ public:
 
 	//ŠJ•ú
 	void Release() override;
+	void SetIdleState();;
+	void SetRunState();
+	void SetDefeetState();
+	void SetTraversalState();
+	OSS GetState() { return ossanState_; }
 public:
 	XMVECTOR GetMoveVec();
 	CDTimer* cdtimer_;
