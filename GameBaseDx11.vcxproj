@@ -152,6 +152,7 @@
     <ClCompile Include="Ground.cpp" />
     <ClCompile Include="Ossan.cpp" />
     <ClCompile Include="TestScene.cpp" />
+    <ClCompile Include="UIImage.cpp" />
     <ClCompile Include="Wanwan.cpp" />
     <ClCompile Include="wanwanGenerator.cpp" />
   </ItemGroup>
@@ -183,6 +184,7 @@
     <ClInclude Include="Ground.h" />
     <ClInclude Include="Ossan.h" />
     <ClInclude Include="TestScene.h" />
+    <ClInclude Include="UIImage.h" />
     <ClInclude Include="Wanwan.h" />
     <ClInclude Include="wanwanGenerator.h" />
   </ItemGroup>

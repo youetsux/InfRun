@@ -2,7 +2,7 @@
 #include "Engine/GameObject.h"
 #include "CDTimer.h"
 #include "wanwanGenerator.h"
-#include "Engine/Image.h"
+#include "UIImage.h"
 
 namespace
 {
@@ -26,7 +26,7 @@ class TestScene : public GameObject
 	CDTimer*timer_;
 	wanwanGenerator* wang;
 	PLAYSTATE PSTATE;
-
+	UIImage* uiImage_;
 public:
 	void PlayUpdate();
 	void ReadyUpdate();

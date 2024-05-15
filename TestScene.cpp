@@ -37,6 +37,8 @@ void TestScene::ReadyUpdate()
 		PSTATE = PLAY;
 		player->SetRunState();
 		ground->StartScroll();
+		uiImage_->DisableRender();
+		uiImage_->KillMe();
 		wang = Instantiate<wanwanGenerator>(this);
 		wang->SetSpeed(0.1f);
 		
@@ -49,14 +51,14 @@ void TestScene::ReadyUpdate()
 
 //コンストラクタ
 TestScene::TestScene(GameObject * parent)
-	: GameObject(parent, "TestScene"),timer_(nullptr),PSTATE(READY),msgBoard_(-1)
+	: GameObject(parent, "TestScene"),timer_(nullptr),PSTATE(READY)
 {
 }
 
 //初期化
 void TestScene::Initialize()
 {
-	msgBoard_ = Image::Load("ready.png");
+
 	timer_ = new CDTimer(this, GPERIODS[READY]);
 
 	ground = Instantiate<Ground>(this);
@@ -66,6 +68,8 @@ void TestScene::Initialize()
 	player = Instantiate<Ossan>(this);
 	XMFLOAT3 pos = player->GetWorldPosition();
 	Camera::SetTarget({ 0.0f, 0.2f, 2.0f });
+	uiImage_ = Instantiate<UIImage>(this);
+	uiImage_->EnableRender();
 	
 }
 
@@ -94,12 +98,6 @@ void TestScene::Draw()
 	switch (PSTATE)
 	{
 	case READY:
-	{
-		Transform t;
-		t.position_ = { 0,0.5, 0 };
-		Image::SetTransform(msgBoard_, t);
-		Image::Draw(msgBoard_);
-	}
 		break;
 	case PLAY:
 		break;
