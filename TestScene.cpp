@@ -70,6 +70,7 @@ void TestScene::Initialize()
 	Camera::SetTarget({ 0.0f, 0.2f, 2.0f });
 	uiImage_ = Instantiate<UIImage>(this);
 	uiImage_->EnableRender();
+	uiImage_->SetTimerInstance(timer_);
 	
 }
 
