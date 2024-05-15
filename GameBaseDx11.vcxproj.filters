@@ -100,6 +100,8 @@
     <ClCompile Include="CDTimer.cpp" />
     <ClCompile Include="Ground.cpp" />
     <ClCompile Include="Wanwan.cpp" />
+    <ClCompile Include="wanwanGenerator.cpp" />
+    <ClCompile Include="UIImage.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Engine\BoxCollider.h">
@@ -176,6 +178,8 @@
     <ClInclude Include="CDTimer.h" />
     <ClInclude Include="Ground.h" />
     <ClInclude Include="Wanwan.h" />
+    <ClInclude Include="wanwanGenerator.h" />
+    <ClInclude Include="UIImage.h" />
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="Assets\Shader\Simple2D.hlsl">
