@@ -5,6 +5,22 @@
 #include <d3d11.h>
 #include <DirectXMath.h>
 
+#include <Effekseer.h>
+#include <EffekseerRendererDX11.h>
+#include <EffekseerSoundXAudio2.h>
+
+//#if _DEBUG
+#pragma comment(lib, "Effekseer.Debug.lib" )
+#pragma comment(lib, "EffekseerRendererDX11.Debug.lib" )
+#pragma comment(lib, "EffekseerSoundXAudio2.Debug.lib" )
+//#else
+//#pragma comment(lib, "Effekseer.Release.lib" )
+//#pragma comment(lib, "EffekseerRendererDX11.Release.lib" )
+//#pragma comment(lib, "EffekseerSoundXAudio2.Release.lib" )
+//#endif
+
+
+
 //リンカ
 #pragma comment(lib, "d3d11.lib")
 #pragma comment(lib, "d3dcompiler.lib")
@@ -25,6 +41,14 @@ namespace Direct3D
 	//【コンテキスト】
 	//GPUに命令を出すためのやつ
 	extern ID3D11DeviceContext*    pContext_;
+
+	//Effecseer関連
+
+	extern ::Effekseer::Manager* g_manager;
+	extern ::EffekseerRenderer::Renderer* g_renderer;
+	extern ::Effekseer::Effect* g_effect;
+	extern ::Effekseer::Handle				g_handle;
+	extern ::Effekseer::Vector3D			g_position;
 
 
 	//■シェーダー関連で必要なセット
@@ -47,6 +71,8 @@ namespace Direct3D
 		//【ラスタライザ】
 		//頂点の表示位置確定後、画面のどのピクセルを光らせればいいか求めるもの
 		ID3D11RasterizerState*	pRasterizerState;
+
+
 	};
 
 	//■ブレンドモード
@@ -61,7 +87,6 @@ namespace Direct3D
 	extern int		screenWidth_;		//スクリーンの幅
 	extern int		screenHeight_;		//スクリーンの高さ
 	extern bool		isDrawCollision_;	//コリジョンを表示するかフラグ
-
 
 
 
@@ -109,4 +134,3 @@ namespace Direct3D
 	//引数：isWrite	  true=書き込みON／false=書き込みOFF
 	void SetDepthBafferWriteEnable(bool isWrite);
 };
-

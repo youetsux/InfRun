@@ -125,7 +125,6 @@
     <ClCompile Include="wanwanGenerator.cpp">
       <Filter>03OBJECTS</Filter>
     </ClCompile>
-    <ClCompile Include="CEaseFunction.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Engine\BoxCollider.h">
@@ -218,7 +217,9 @@
     <ClInclude Include="wanwanGenerator.h">
       <Filter>03OBJECTS</Filter>
     </ClInclude>
-    <ClInclude Include="CEaseFunction.h" />
+    <ClInclude Include="CEaseFunction.h">
+      <Filter>05Util</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="Assets\Shader\Simple2D.hlsl">
@@ -233,5 +234,8 @@
     <FxCompile Include="Assets\Shader\BillBoard.hlsl">
       <Filter>02Shader</Filter>
     </FxCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
   </ItemGroup>
 </Project>

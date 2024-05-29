@@ -41,7 +41,13 @@ namespace Direct3D
 	int						screenWidth_ = 0;
 	int						screenHeight_ = 0;
 
+	//Effecseer関連
 
+	::Effekseer::Manager* g_manager = nullptr;
+	::EffekseerRenderer::Renderer* g_renderer =nullptr;
+	::Effekseer::Effect* g_effect = nullptr;
+	::Effekseer::Handle				g_handle = -1;
+	::Effekseer::Vector3D			g_position{ 0,0,0 };
 
 	//初期化処理
 	HRESULT Direct3D::Initialize(HWND hWnd, int screenWidth, int screenHeight)
@@ -110,8 +116,8 @@ namespace Direct3D
 		//一時的にバックバッファを取得しただけなので、解放
 		pBackBuffer->Release();
 
-
-
+		g_manager = Effekseer::Manager::Create(5000);
+		g_renderer = EffekseerRendererDX11::Renderer::Create(pDevice_, pContext_, 5000);
 
 		/////////////////////////////////////////////////////////////////////////////////////////////
 
