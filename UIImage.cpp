@@ -1,6 +1,7 @@
 #include "UIImage.h"
 #include "CDTimer.h"
 #include "Engine/Debug.h"
+#include "CEaseFunction.h"
 
 UIImage::UIImage(GameObject* parent)
 	:GameObject(parent,"UIImage"), readyImg_(-1), shouldRender_(false),timer_(nullptr)
@@ -36,7 +37,7 @@ void UIImage::Draw()
 				int num = (int)(timer_->GetTime()) - 1;
 				Image::SetRect(cdNumImg_, (512/3.15)*num, 0, 512 / 3.15, 177);
 				float a = timer_->GetTime();
-				float nScale = 1.0  + (a - floor(a));
+				float nScale = 1.0 + Direct3D::EaseFunc["InOutBounce"](a - floor(a));
 				cdNumTf_.scale_ = { nScale, nScale, 1 };
 				Image::SetTransform(cdNumImg_, cdNumTf_);
 				Image::Draw(cdNumImg_);
