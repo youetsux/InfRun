@@ -43,11 +43,45 @@ namespace Direct3D
 
 	//Effecseer関連
 
-	::Effekseer::Manager* g_manager = nullptr;
-	::EffekseerRenderer::Renderer* g_renderer =nullptr;
+	//::Effekseer::Manager* g_manager = nullptr;
+	::EffekseerRendererDX11::RendererRef g_renderer;
 	::Effekseer::Effect* g_effect = nullptr;
 	::Effekseer::Handle				g_handle = -1;
 	::Effekseer::Vector3D			g_position{ 0,0,0 };
+
+	void Direct3D::SetupEffekseerModules(::Effekseer::ManagerRef efkManager)
+	{
+		// Create a  graphics device
+		// 描画デバイスの作成dd
+		auto graphicsDevice = ::EffekseerRendererDX11::CreateGraphicsDevice(pDevice_, pContext_);
+
+		// Create a renderer of effects
+		// エフェクトのレンダラーの作成
+		
+		auto efkRenderer = ::EffekseerRendererDX11::Renderer::Create(graphicsDevice,  8000);
+
+		// Sprcify rendering modules
+		// 描画モジュールの設定
+		efkManager->SetSpriteRenderer(efkRenderer->CreateSpriteRenderer());
+		efkManager->SetRibbonRenderer(efkRenderer->CreateRibbonRenderer());
+		efkManager->SetRingRenderer(efkRenderer->CreateRingRenderer());
+		efkManager->SetTrackRenderer(efkRenderer->CreateTrackRenderer());
+		efkManager->SetModelRenderer(efkRenderer->CreateModelRenderer());
+
+		// Specify a texture, model, curve and material loader
+		// It can be extended by yourself. It is loaded from a file on now.
+		// テクスチャ、モデル、カーブ、マテリアルローダーの設定する。
+		// ユーザーが独自で拡張できる。現在はファイルから読み込んでいる。
+		efkManager->SetTextureLoader(efkRenderer->CreateTextureLoader());
+		efkManager->SetModelLoader(efkRenderer->CreateModelLoader());
+		efkManager->SetMaterialLoader(efkRenderer->CreateMaterialLoader());
+		efkManager->SetCurveLoader(Effekseer::MakeRefPtr<Effekseer::CurveLoader>());
+
+	}
+	EffekseerRendererDX11::RendererRef Direct3D::GetEffekseerRenderer()
+	{
+		return EffekseerRendererDX11::RendererRef();
+	}
 
 	//初期化処理
 	HRESULT Direct3D::Initialize(HWND hWnd, int screenWidth, int screenHeight)
@@ -116,8 +150,22 @@ namespace Direct3D
 		//一時的にバックバッファを取得しただけなので、解放
 		pBackBuffer->Release();
 
-		g_manager = Effekseer::Manager::Create(5000);
-		g_renderer = EffekseerRendererDX11::Renderer::Create(pDevice_, pContext_, 5000);
+
+
+		// Create a manager of effects
+		// エフェクトのマネージャーの作成
+		auto efkManager = ::Effekseer::Manager::Create(8000);
+
+		// Setup effekseer modules
+		// Effekseerのモジュールをセットアップする
+		SetupEffekseerModules(efkManager);
+		//auto efkRenderer = GetEffekseerRenderer();
+
+
+
+
+
+
 
 		/////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -402,7 +450,8 @@ namespace Direct3D
 		pContext_->ClearRenderTargetView(pRenderTargetView_, clearColor);
 
 		//深度バッファクリア
-		pContext_->ClearDepthStencilView(pDepthStencilView, D3D11_CLEAR_DEPTH, 1.0f, 0);	
+		pContext_->ClearDepthStencilView(pDepthStencilView, D3D11_CLEAR_DEPTH, 1.0f, 0);
+
 	}
 
 

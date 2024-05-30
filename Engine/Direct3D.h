@@ -6,13 +6,13 @@
 #include <DirectXMath.h>
 
 #include <Effekseer.h>
-#include <EffekseerRendererDX11.h>
-#include <EffekseerSoundXAudio2.h>
+#include <../EffekseerRendererDX11/EffekseerRendererDX11.h>
+//#include <EffekseerSoundXAudio2.h>
 
 //#if _DEBUG
-#pragma comment(lib, "Effekseer.Debug.lib" )
-#pragma comment(lib, "EffekseerRendererDX11.Debug.lib" )
-#pragma comment(lib, "EffekseerSoundXAudio2.Debug.lib" )
+#pragma comment(lib, "Effekseerd.lib" )
+#pragma comment(lib, "EffekseerRendererDX11d.lib" )
+//#pragma comment(lib, "EffekseerSoundXAudio2.Debug.lib" )
 //#else
 //#pragma comment(lib, "Effekseer.Release.lib" )
 //#pragma comment(lib, "EffekseerRendererDX11.Release.lib" )
@@ -44,11 +44,14 @@ namespace Direct3D
 
 	//Effecseer関連
 
-	extern ::Effekseer::Manager* g_manager;
-	extern ::EffekseerRenderer::Renderer* g_renderer;
+	//extern ::Effekseer::Manager* g_manager;
+	extern ::EffekseerRendererDX11::RendererRef g_renderer;
 	extern ::Effekseer::Effect* g_effect;
 	extern ::Effekseer::Handle				g_handle;
 	extern ::Effekseer::Vector3D			g_position;
+	void SetupEffekseerModules(::Effekseer::ManagerRef efkManager);
+
+	extern EffekseerRendererDX11::RendererRef GetEffekseerRenderer();
 
 
 	//■シェーダー関連で必要なセット
@@ -87,9 +90,6 @@ namespace Direct3D
 	extern int		screenWidth_;		//スクリーンの幅
 	extern int		screenHeight_;		//スクリーンの高さ
 	extern bool		isDrawCollision_;	//コリジョンを表示するかフラグ
-
-
-
 
 
 	////////////////////////ここからは関数///////////////////////////////
