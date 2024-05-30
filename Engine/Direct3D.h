@@ -44,9 +44,9 @@ namespace Direct3D
 
 	//Effecseer関連
 
-	//extern ::Effekseer::Manager* g_manager;
+	extern ::Effekseer::ManagerRef g_manager;
 	extern ::EffekseerRendererDX11::RendererRef g_renderer;
-	extern ::Effekseer::Effect* g_effect;
+	extern ::Effekseer::EffectRef g_effect;
 	extern ::Effekseer::Handle				g_handle;
 	extern ::Effekseer::Vector3D			g_position;
 	void SetupEffekseerModules(::Effekseer::ManagerRef efkManager);
@@ -75,7 +75,6 @@ namespace Direct3D
 		//頂点の表示位置確定後、画面のどのピクセルを光らせればいいか求めるもの
 		ID3D11RasterizerState*	pRasterizerState;
 
-
 	};
 
 	//■ブレンドモード
@@ -83,7 +82,6 @@ namespace Direct3D
 	{
 		BLEND_DEFAULT, BLEND_ADD, BLEND_MAX
 	};
-
 
 
 	//その他
@@ -120,6 +118,8 @@ namespace Direct3D
 
 	//開放処理
 	void Release();
+
+
 
 
 	//三角形と線分（レイ）の衝突判定（衝突判定に使用）

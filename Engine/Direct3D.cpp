@@ -43,9 +43,9 @@ namespace Direct3D
 
 	//Effecseer関連
 
-	//::Effekseer::Manager* g_manager = nullptr;
+	::Effekseer::ManagerRef g_manager;
 	::EffekseerRendererDX11::RendererRef g_renderer;
-	::Effekseer::Effect* g_effect = nullptr;
+	::Effekseer::EffectRef g_effect;
 	::Effekseer::Handle				g_handle = -1;
 	::Effekseer::Vector3D			g_position{ 0,0,0 };
 
@@ -58,7 +58,8 @@ namespace Direct3D
 		// Create a renderer of effects
 		// エフェクトのレンダラーの作成
 		
-		auto efkRenderer = ::EffekseerRendererDX11::Renderer::Create(graphicsDevice,  8000);
+		g_renderer = ::EffekseerRendererDX11::Renderer::Create(graphicsDevice,  8000);
+		auto efkRenderer = g_renderer;
 
 		// Sprcify rendering modules
 		// 描画モジュールの設定
@@ -80,7 +81,7 @@ namespace Direct3D
 	}
 	EffekseerRendererDX11::RendererRef Direct3D::GetEffekseerRenderer()
 	{
-		return EffekseerRendererDX11::RendererRef();
+		return g_renderer;
 	}
 
 	//初期化処理
@@ -154,8 +155,8 @@ namespace Direct3D
 
 		// Create a manager of effects
 		// エフェクトのマネージャーの作成
-		auto efkManager = ::Effekseer::Manager::Create(8000);
-
+		g_manager = ::Effekseer::Manager::Create(8000);
+		auto efkManager = g_manager;
 		// Setup effekseer modules
 		// Effekseerのモジュールをセットアップする
 		SetupEffekseerModules(efkManager);

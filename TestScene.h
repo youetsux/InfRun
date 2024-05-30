@@ -16,6 +16,7 @@ namespace
 
 class Ossan;
 class Ground;
+
 //テストシーンを管理するクラス
 class TestScene : public GameObject
 {
@@ -30,6 +31,7 @@ class TestScene : public GameObject
 public:
 	void PlayUpdate();
 	void ReadyUpdate();
+	void EffectDraw();
 
 public:
 	//コンストラクタ
