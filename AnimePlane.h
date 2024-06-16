@@ -1,17 +1,15 @@
 #pragma once
 #include "Engine/GameObject.h"
 
-class Ossan;
-class AnimePlane;
-//テストシーンを管理するクラス
-class TestScene : public GameObject
+
+class AnimePlane :
+    public GameObject
 {
-	AnimePlane* player;
-	XMFLOAT3 camPos_;
+	int hmodel_;
 public:
 	//コンストラクタ
 	//引数：parent  親オブジェクト（SceneManager）
-	TestScene(GameObject* parent);
+	AnimePlane(GameObject* parent);
 
 	//初期化
 	void Initialize() override;
@@ -25,3 +23,4 @@ public:
 	//開放
 	void Release() override;
 };
+
