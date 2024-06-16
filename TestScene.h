@@ -31,7 +31,7 @@ class TestScene : public GameObject
 public:
 	void PlayUpdate();
 	void ReadyUpdate();
-	void EffectDraw();
+	//void EffectDraw();
 
 public:
 	//コンストラクタ
