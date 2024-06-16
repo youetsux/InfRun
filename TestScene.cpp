@@ -5,13 +5,57 @@
 #include "Ossan.h"
 #include "Engine/Debug.h"
 #include "Ground.h"
+#include "Wanwan.h"
+#include "wanwanGenerator.h"
+#include "Engine/Debug.h"
+#include "Engine/Direct3D.h"
 
-const XMFLOAT3 INITCAMPOS{ 0, 0.5, -1 };
+
+
+namespace {
+	const XMFLOAT3 INITCAMPOS{ 0, 1, -1.5 };
+	//const XMFLOAT3 INITCAMPOS{ 0, 0.5, 0.1 };
+	
+}
+
+
+
+void TestScene::PlayUpdate()
+{
+	if (timer_->IsTimeOver())
+	{
+		wang->Generate();
+		timer_->ResetTimer();
+		timer_->StartTimer();
+	}
+	timer_->Update();
+}
+
+void TestScene::ReadyUpdate()
+{
+	
+	if (timer_->IsTimeOver())
+	{
+		PSTATE = PLAY;
+		player->SetRunState();
+		ground->StartScroll();
+		uiImage_->DisableRender();
+		uiImage_->KillMe();
+		wang = Instantiate<wanwanGenerator>(this);
+		wang->SetSpeed(0.1f);
+		
+		timer_->SetInitTime(GPERIODS[PSTATE]);
+		timer_->StartTimer();
+	}
+	
+	timer_->Update();
+}
+
 
 
 //コンストラクタ
 TestScene::TestScene(GameObject * parent)
-	: GameObject(parent, "TestScene")
+	: GameObject(parent, "TestScene"),timer_(nullptr),PSTATE(READY)
 {
 }
 
@@ -24,27 +68,53 @@ void TestScene::Initialize()
 	ground = Instantiate<Ground>(this);
 	camPos_ = INITCAMPOS;
 	Camera::SetPosition(camPos_);
+
 	player = Instantiate<Ossan>(this);
 	XMFLOAT3 pos = player->GetWorldPosition();
-	//Camera::SetTarget({pos.x ,pos.y+1.0f, pos.z });
-	Camera::SetTarget({ 0, 0.2, 2 });
+	Camera::SetTarget({ 0.0f, 0.2f, 2.0f });
+	uiImage_ = Instantiate<UIImage>(this);
+	uiImage_->EnableRender();
+	uiImage_->SetTimerInstance(timer_);
+
+	
+
+		
 }
 
 //更新
 void TestScene::Update()
 {
-	//XMVECTOR tVec = player->GetMoveVec();
-
-	//XMStoreFloat3(&camPos_, XMLoadFloat3(&camPos_) + tVec);
-	//XMFLOAT3 pos = player->GetWorldPosition();
-
-	//Camera::SetPosition(camPos_);
-	//Camera::SetTarget({ pos.x ,pos.y + 0.5f, pos.z });
+	switch (PSTATE)
+	{
+	case READY:
+		ReadyUpdate();
+		break;
+	case PLAY:
+		PlayUpdate();
+		break;
+	case DEAD:
+		break;
+	default:
+		return;
+	}
 }
 
 //描画//
 void TestScene::Draw()
 {
+	switch (PSTATE)
+	{
+	case READY:
+		break;
+	case PLAY:
+		//EffectDraw();
+		break;
+	case DEAD:
+		break;
+	default:
+		return;
+	}
+	
 }
 
 //開放

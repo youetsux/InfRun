@@ -5,6 +5,9 @@
 #include <d3d11.h>
 #include <DirectXMath.h>
 
+
+
+
 //リンカ
 #pragma comment(lib, "d3d11.lib")
 #pragma comment(lib, "d3dcompiler.lib")
@@ -27,6 +30,9 @@ namespace Direct3D
 	extern ID3D11DeviceContext*    pContext_;
 
 
+
+
+
 	//■シェーダー関連で必要なセット
 	enum SHADER_TYPE{SHADER_3D, SHADER_2D, SHADER_UNLIT, SHADER_BILLBOARD, SHADER_MAX};	//3タイプ（3D用、2D用、当たり判定枠表示用）
 	struct SHADER_BUNDLE
@@ -47,6 +53,7 @@ namespace Direct3D
 		//【ラスタライザ】
 		//頂点の表示位置確定後、画面のどのピクセルを光らせればいいか求めるもの
 		ID3D11RasterizerState*	pRasterizerState;
+
 	};
 
 	//■ブレンドモード
@@ -56,15 +63,10 @@ namespace Direct3D
 	};
 
 
-
 	//その他
 	extern int		screenWidth_;		//スクリーンの幅
 	extern int		screenHeight_;		//スクリーンの高さ
 	extern bool		isDrawCollision_;	//コリジョンを表示するかフラグ
-
-
-
-
 
 
 	////////////////////////ここからは関数///////////////////////////////
@@ -97,6 +99,8 @@ namespace Direct3D
 	void Release();
 
 
+
+
 	//三角形と線分（レイ）の衝突判定（衝突判定に使用）
 	//引数：start　		レイのスタート位置
 	//引数：direction	レイの方向
@@ -109,4 +113,3 @@ namespace Direct3D
 	//引数：isWrite	  true=書き込みON／false=書き込みOFF
 	void SetDepthBafferWriteEnable(bool isWrite);
 };
-
