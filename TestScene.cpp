@@ -21,9 +21,10 @@ void TestScene::Initialize()
 
 	timer_ = new CDTimer(this, GPERIODS[READY]);
 
-	Instantiate<Ground>(this);
+	ground = Instantiate<Ground>(this);
 	camPos_ = INITCAMPOS;
 	Camera::SetPosition(camPos_);
+	player = Instantiate<Ossan>(this);
 	XMFLOAT3 pos = player->GetWorldPosition();
 	//Camera::SetTarget({pos.x ,pos.y+1.0f, pos.z });
 	Camera::SetTarget({ 0, 0.2, 2 });
