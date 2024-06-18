@@ -1,6 +1,7 @@
 #pragma once
 
 #include <memory>
+#include <filesystem>
 
 
 #pragma warning(disable:4100) // 'identifier' : unreferenced formal parameter
@@ -16,71 +17,55 @@
 #endif
 #include <DirectXMath.h>
 
-namespace effekseer_helper {
-
+namespace EFFEKSEERLIB {
+    //全体で使うEffekseerのマネージャやレンダラなどのデータ
     using RendererRef = EffekseerRendererDX11::RendererRef;
 
-    inline Effekseer::Vector3D ToVector3D(const DirectX::SimpleMath::Vector3& vec3) {
-        return Effekseer::Vector3D(vec3.x, vec3.y, vec3.z);
-    }
-    inline Effekseer::Matrix43 ToMatrix43(const DirectX::SimpleMath::Matrix& mat) {
-        Effekseer::Matrix43 mat43{};
-        for (int i = 0; i < 4; ++i) {
-            for (int j = 0; j < 3; ++j) {
-                mat43.Value[i][j] = mat.m[i][j];
-            }
-        }
-        return mat43;
-    }
-    inline Effekseer::Matrix44 ToMatrix44(const DirectX::SimpleMath::Matrix& mat) {
-        Effekseer::Matrix44 mat44{};
-        for (int i = 0; i < 4; ++i) {
-            for (int j = 0; j < 4; ++j) {
-                mat44.Values[i][j] = mat.m[i][j];
-            }
-        }
-        return mat44;
+
+    inline void RendererInit(RendererRef renderer, ID3D11Device* dev, ID3D11DeviceContext* dc, int max_square) {
+        renderer = EffekseerRendererDX11::Renderer::Create(dev, dc, max_square);
     }
 
-    inline void RendererInit(RendererRef* renderer, ID3D11Device* dev, ID3D11DeviceContext* ctx, int max_square) {
-        *renderer = EffekseerRendererDX11::Renderer::Create(dev, ctx, max_square);
+    inline void ManagerInit(Effekseer::ManagerRef manager, const RendererRef& renderer, int max_square) {
+        manager = Effekseer::Manager::Create(max_square);
+        manager->SetCoordinateSystem(Effekseer::CoordinateSystem::LH);
+
+        manager->SetSpriteRenderer(renderer->CreateSpriteRenderer());
+        manager->SetRibbonRenderer(renderer->CreateRibbonRenderer());
+        manager->SetRingRenderer(renderer->CreateRingRenderer());
+        manager->SetTrackRenderer(renderer->CreateTrackRenderer());
+        manager->SetModelRenderer(renderer->CreateModelRenderer());
+
+        manager->SetTextureLoader(renderer->CreateTextureLoader());
+        manager->SetModelLoader(renderer->CreateModelLoader());
+        manager->SetMaterialLoader(renderer->CreateMaterialLoader());
+        manager->SetCurveLoader(Effekseer::MakeRefPtr<Effekseer::CurveLoader>());
     }
 
-    inline void ManagerInit(Effekseer::ManagerRef* manager, const RendererRef& renderer, int max_square) {
-        *manager = Effekseer::Manager::Create(max_square);
-        (*manager)->SetCoordinateSystem(Effekseer::CoordinateSystem::LH);
+    //個別のデータ保持用
 
-        (*manager)->SetSpriteRenderer(renderer->CreateSpriteRenderer());
-        (*manager)->SetRibbonRenderer(renderer->CreateRibbonRenderer());
-        (*manager)->SetRingRenderer(renderer->CreateRingRenderer());
-        (*manager)->SetTrackRenderer(renderer->CreateTrackRenderer());
-        (*manager)->SetModelRenderer(renderer->CreateModelRenderer());
-
-        (*manager)->SetTextureLoader(renderer->CreateTextureLoader());
-        (*manager)->SetModelLoader(renderer->CreateModelLoader());
-        (*manager)->SetMaterialLoader(renderer->CreateMaterialLoader());
-        (*manager)->SetCurveLoader(Effekseer::MakeRefPtr<Effekseer::CurveLoader>());
-    }
-
-    class EffectData
+    class EFKData
     {
     public:
 
-        EffectData(std::string_view file_path)
+        EFKData(std::string_view file_path)
             : m_filePath(file_path)
         {}
-        EffectData(const Effekseer::ManagerRef& manager, std::string_view file_path)
+        EFKData(const Effekseer::ManagerRef& manager, std::string_view file_path)
             : m_filePath(file_path)
         {
             Load(manager);
         }
 
         void Load(const Effekseer::ManagerRef& manager) {
-            m_effectRef = Effekseer::Effect::Create(manager, string::StrToUtf16(m_filePath).c_str());
+            if (std::filesystem::is_regular_file(m_filePath)) {
+                std::filesystem::path filepath(m_filePath);
+                m_effectRef = Effekseer::Effect::Create(manager, filepath.u16string().c_str());
+            }
         }
 
         const std::string& GetFilePath() const noexcept {
-            return m_filePath;
+            return m_filePath.string();
         }
 
         const Effekseer::EffectRef& GetEffectRef() const noexcept {
@@ -89,15 +74,15 @@ namespace effekseer_helper {
 
     private:
 
-        const std::string    m_filePath;
+        const std::filesystem::path m_filePath;
         Effekseer::EffectRef m_effectRef;
 
     };
 
     struct EffectTransform {
-        DirectX::SimpleMath::Matrix matrix;
+        DirectX::XMMATRIX matrix;
         bool                        isLoop = false;
-        float                       speed = 1.f;
+        float                       speed = 1.0f;
         int                         maxFrame = 0;
     };
 
@@ -105,11 +90,11 @@ namespace effekseer_helper {
     {
     public:
 
-        EffectInstance(const std::shared_ptr<EffectData>& effect_data)
+        EffectInstance(const std::shared_ptr<EFKData>& effect_data)
             : m_spEffectData(effect_data)
         {}
 
-        std::shared_ptr<const EffectData> GetEffectData() const noexcept {
+        std::shared_ptr<const EFKData> GetEffectData() const noexcept {
             return m_spEffectData;
         }
 
@@ -119,7 +104,7 @@ namespace effekseer_helper {
 
     private:
 
-        const std::shared_ptr<EffectData> m_spEffectData;
+        const std::shared_ptr<EFKData> m_spEffectData;
 
     };
 
