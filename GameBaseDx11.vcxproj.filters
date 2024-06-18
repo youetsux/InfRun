@@ -125,6 +125,9 @@
     <ClCompile Include="wanwanGenerator.cpp">
       <Filter>03OBJECTS</Filter>
     </ClCompile>
+    <ClCompile Include="EffekseerVFX.cpp">
+      <Filter>01Engine\ResourceManager</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Engine\BoxCollider.h">
@@ -219,6 +222,9 @@
     </ClInclude>
     <ClInclude Include="CEaseFunction.h">
       <Filter>05Util</Filter>
+    </ClInclude>
+    <ClInclude Include="EffekseerVXF.h">
+      <Filter>01Engine\ResourceManager</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

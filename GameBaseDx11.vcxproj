@@ -72,13 +72,13 @@
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <IncludePath>C:\Program Files\Autodesk\FBX\FBX SDK\2020.3.7\include;D:\Youetsu\PROJECTS\Effekseer-fd832d66cd6b97f70b7337636ef3f651f7433217\Effekseer0610\Runtime\include;$(IncludePath);C:\Program Files\Autodesk\FBX\FBX SDK\2020.3.1\include</IncludePath>
-    <LibraryPath>C:\Program Files\Autodesk\FBX\FBX SDK\2020.3.7\lib\x64\debug;D:\Youetsu\PROJECTS\Effekseer-fd832d66cd6b97f70b7337636ef3f651f7433217\Effekseer0610\Runtime\x64\Debug;$(LibraryPath);C:\Program Files\Autodesk\FBX\FBX SDK\2020.3.1\lib\vs2019\x64\debug;D:\プロジェクト\EffekseerForCpp170e\install_msvc2022_x64\lib;D:\プロジェクト\EffekseerForCpp170e\install_msvc2022_x64\lib;D:\Youetsu\VSPROJECT\EffekseeLib\install_msvc2022_x64\lib</LibraryPath>
-    <ExternalIncludePath>D:\プロジェクト\EffekseerForCpp170e\install_msvc2022_x64\include\Effekseer;D:\Youetsu\VSPROJECT\EffekseeLib\install_msvc2022_x64\include\Effekseer;$(ExternalIncludePath)</ExternalIncludePath>
+    <LibraryPath>C:\Program Files\Autodesk\FBX\FBX SDK\2020.3.7\lib\x64\debug;D:\Youetsu\PROJECTS\Effekseer-fd832d66cd6b97f70b7337636ef3f651f7433217\Effekseer0610\Runtime\x64\Debug;$(LibraryPath);C:\Program Files\Autodesk\FBX\FBX SDK\2020.3.1\lib\vs2019\x64\debug;D:\プロジェクト\EffekseerForCpp170e\install_msvc2022_x64\lib;D:\プロジェクト\EffekseerForCpp170e\install_msvc2022_x64\lib;D:\Youetsu\VSPROJECT\EffekseeLib\install_msvc2022_x64\lib;C:\Users\y.sato\source\repos\youetsux\InfRun\EffekseeLib\install_msvc2022_x64\lib</LibraryPath>
+    <ExternalIncludePath>C:\Users\y.sato\source\repos\youetsux\InfRun\EffekseeLib\install_msvc2022_x64\include\Effekseer;$(ExternalIncludePath)</ExternalIncludePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <IncludePath>$(VC_IncludePath);$(WindowsSDK_IncludePath);;C:\Program Files\Autodesk\FBX\FBX SDK\2020.3.1\include</IncludePath>
-    <LibraryPath>$(VC_LibraryPath_x64);$(WindowsSDK_LibraryPath_x64);C:\Program Files\Autodesk\FBX\FBX SDK\2020.3.1\lib\vs2019\x64\debug;D:\プロジェクト\EffekseerForCpp170e\install_msvc2022_x64\lib;D:\プロジェクト\EffekseerForCpp170e\install_msvc2022_x64\lib;D:\Youetsu\VSPROJECT\EffekseeLib\install_msvc2022_x64\lib</LibraryPath>
-    <ExternalIncludePath>D:\プロジェクト\EffekseerForCpp170e\install_msvc2022_x64\include\Effekseer;D:\Youetsu\VSPROJECT\EffekseeLib\install_msvc2022_x64\include\Effekseer;$(ExternalIncludePath)</ExternalIncludePath>
+    <LibraryPath>$(VC_LibraryPath_x64);$(WindowsSDK_LibraryPath_x64);C:\Program Files\Autodesk\FBX\FBX SDK\2020.3.1\lib\vs2019\x64\debug;D:\プロジェクト\EffekseerForCpp170e\install_msvc2022_x64\lib;D:\プロジェクト\EffekseerForCpp170e\install_msvc2022_x64\lib;D:\Youetsu\VSPROJECT\EffekseeLib\install_msvc2022_x64\lib;C:\Users\y.sato\source\repos\youetsux\InfRun\EffekseeLib\install_msvc2022_x64\lib</LibraryPath>
+    <ExternalIncludePath>C:\Users\y.sato\source\repos\youetsux\InfRun\EffekseeLib\install_msvc2022_x64\include\Effekseer;$(ExternalIncludePath)</ExternalIncludePath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
@@ -95,6 +95,7 @@
       <SDLCheck>true</SDLCheck>
       <ConformanceMode>true</ConformanceMode>
       <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
+      <LanguageStandard>stdcpp20</LanguageStandard>
     </ClCompile>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -119,6 +120,7 @@
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <SDLCheck>true</SDLCheck>
       <ConformanceMode>true</ConformanceMode>
+      <LanguageStandard>stdcpp20</LanguageStandard>
     </ClCompile>
     <Link>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
@@ -127,6 +129,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="CDTimer.cpp" />
+    <ClCompile Include="EffekseerVFX.cpp" />
     <ClCompile Include="Engine\Audio.cpp" />
     <ClCompile Include="Engine\BillBoard.cpp" />
     <ClCompile Include="Engine\BoxCollider.cpp" />
@@ -160,6 +163,7 @@
   <ItemGroup>
     <ClInclude Include="CDTimer.h" />
     <ClInclude Include="CEaseFunction.h" />
+    <ClInclude Include="EffekseerVXF.h" />
     <ClInclude Include="Engine\Audio.h" />
     <ClInclude Include="Engine\BillBoard.h" />
     <ClInclude Include="Engine\BoxCollider.h" />
