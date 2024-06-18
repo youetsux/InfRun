@@ -18,6 +18,7 @@
 #include "Input.h"
 #include "Audio.h"
 #include "VFX.h"
+#include "../EffekseerVXF.h"
 
 #pragma comment(lib,"Winmm.lib")
 
@@ -65,6 +66,10 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 	Audio::Initialize();
 
 
+	EFFEKSEERLIB::EffekseerManager *efk = new EFFEKSEERLIB::EffekseerManager;
+	efk->Initialize(Direct3D::pDevice_, Direct3D::pContext_);
+
+
 	//ルートオブジェクト準備
 	//すべてのゲームオブジェクトの親となるオブジェクト
 	RootObject* pRootObject = new RootObject;
@@ -108,9 +113,10 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 				}
 			}
 
+			double deltaT = nowTime - lastUpdateTime;
 
 			//指定した時間（FPSを60に設定した場合は60分の1秒）経過していたら更新処理
-			if ((nowTime - lastUpdateTime) * fpsLimit > 1000.0f)
+			if (deltaT * fpsLimit > 1000.0f)
 			{
 				//時間計測関連
 				lastUpdateTime = nowTime;	//現在の時間（最後に画面を更新した時間）を覚えておく
@@ -130,8 +136,8 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 				Camera::Update();
 
 				//エフェクトの更新
-				VFX::Update();
-
+				//VFX::Update();
+				efk->Update(deltaT);
 
 				//このフレームの描画開始
 				Direct3D::BeginDraw();
@@ -141,7 +147,8 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 				pRootObject->DrawSub();
 
 				//エフェクトの描画
-				VFX::Draw();
+				//VFX::Draw();
+				efk->Draw();
 
 				//描画終了
 				Direct3D::EndDraw();

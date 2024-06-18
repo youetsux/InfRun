@@ -5,9 +5,9 @@
 #include <string>
 #include <string_view>
 #include <unordered_map>
-#include <cassert>
 #include "Engine/camera.h"
 #include <DirectXMath.h>
+#include "Assert.h"
 
 namespace fs = std::filesystem;
 
@@ -29,7 +29,7 @@ namespace EFFEKSEERLIB {
     constexpr float DEFAULT_FRAME_RATE{ 60.0f };
     //全体で使うEffekseerのマネージャやレンダラなどのデータ
     using RendererRef = EffekseerRendererDX11::RendererRef;
-    Effekseer::ManagerRef gManager;
+    extern Effekseer::ManagerRef gManager;
     inline Effekseer::Matrix43 CnvMat43(DirectX::XMFLOAT4X4 mat)
     {
         Effekseer::Matrix43 mat43{};
