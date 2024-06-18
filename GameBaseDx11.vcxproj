@@ -171,6 +171,7 @@
     <ClCompile Include="wanwanGenerator.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Assert.h" />
     <ClInclude Include="CDTimer.h" />
     <ClInclude Include="CEaseFunction.h" />
     <ClInclude Include="EffekseerVXF.h" />
