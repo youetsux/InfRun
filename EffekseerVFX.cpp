@@ -1,6 +1,5 @@
 #include "Assert.h"
-#include "EffekseerVXF.h"
-
+#include "EffekseerVFX.h"
 namespace EFFEKSEERLIB {
     Effekseer::ManagerRef gManager;
     EffekseerRendererDX11::RendererRef gRenderer;
