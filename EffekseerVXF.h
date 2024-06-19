@@ -25,11 +25,18 @@ namespace fs = std::filesystem;
 #endif
 
 
+
 namespace EFFEKSEERLIB {
+    class EffekseerManager;//前方宣言
+
     constexpr float DEFAULT_FRAME_RATE{ 60.0f };
     //全体で使うEffekseerのマネージャやレンダラなどのデータ
     using RendererRef = EffekseerRendererDX11::RendererRef;
     extern Effekseer::ManagerRef gManager;
+    extern EffekseerRendererDX11::RendererRef gRenderer;
+    extern EffekseerManager *gEfk;
+
+
     inline Effekseer::Matrix43 CnvMat43(DirectX::XMFLOAT4X4 mat)
     {
         Effekseer::Matrix43 mat43{};
@@ -89,23 +96,23 @@ namespace EFFEKSEERLIB {
         return fmat;
     }
 
-    inline void RendererInit(RendererRef renderer, ID3D11Device* dev, ID3D11DeviceContext* dc, int max_square) {
-        renderer = EffekseerRendererDX11::Renderer::Create(dev, dc, max_square);
+    inline void RendererInit(ID3D11Device* dev, ID3D11DeviceContext* dc, int max_square) {
+        gRenderer = EffekseerRendererDX11::Renderer::Create(dev, dc, max_square);
     }
 
-    inline void ManagerInit(const RendererRef& renderer, int max_square) {
+    inline void ManagerInit(int max_square) {
         gManager = Effekseer::Manager::Create(max_square);
         gManager->SetCoordinateSystem(Effekseer::CoordinateSystem::LH);
 
-        gManager->SetSpriteRenderer(renderer->CreateSpriteRenderer());
-        gManager->SetRibbonRenderer(renderer->CreateRibbonRenderer());
-        gManager->SetRingRenderer(renderer->CreateRingRenderer());
-        gManager->SetTrackRenderer(renderer->CreateTrackRenderer());
-        gManager->SetModelRenderer(renderer->CreateModelRenderer());
+        gManager->SetSpriteRenderer(gRenderer->CreateSpriteRenderer());
+        gManager->SetRibbonRenderer(gRenderer->CreateRibbonRenderer());
+        gManager->SetRingRenderer(gRenderer->CreateRingRenderer());
+        gManager->SetTrackRenderer(gRenderer->CreateTrackRenderer());
+        gManager->SetModelRenderer(gRenderer->CreateModelRenderer());
 
-        gManager->SetTextureLoader(renderer->CreateTextureLoader());
-        gManager->SetModelLoader(renderer->CreateModelLoader());
-        gManager->SetMaterialLoader(renderer->CreateMaterialLoader());
+        gManager->SetTextureLoader(gRenderer->CreateTextureLoader());
+        gManager->SetModelLoader(gRenderer->CreateModelLoader());
+        gManager->SetMaterialLoader(gRenderer->CreateMaterialLoader());
         gManager->SetCurveLoader(Effekseer::MakeRefPtr<Effekseer::CurveLoader>());
     }
 
@@ -186,69 +193,72 @@ namespace EFFEKSEERLIB {
         }
 
         void Initialize(ID3D11Device* dev, ID3D11DeviceContext* dc, int max_square = 8192) {
-            RendererInit(m_rendererRef, dev, dc, max_square);
-            ManagerInit(m_rendererRef, max_square);
+            fps_ = DEFAULT_FRAME_RATE;
+            RendererInit(dev, dc, max_square);
+            ManagerInit(max_square);
+            rendererRef_ = gRenderer;
+            managerRef_ = gManager;
         }
 
         void Update(double delta_time) {
-            constexpr double effect_frame{ DEFAULT_FRAME_RATE };
-            for (auto iter = m_upEffectInstances.begin(); iter != m_upEffectInstances.end();) 
+            SetCamera();
+            //constexpr double effect_frame{ DEFAULT_FRAME_RATE };
+            for (auto iter = EffectInstances.begin(); iter != EffectInstances.end();) 
             {
                 auto& data = *iter->second;
                 auto& handle = iter->second->handle;
                 auto& tranform = iter->second->effectTransform;
 
                 if (data.elapsedTime == 0) {
-                    handle = m_managerRef->Play(data.GetEffectData()->GetEffectRef(), 0, 0, 0);
+                    handle = managerRef_->Play(data.GetEffectData()->GetEffectRef(), 0, 0, 0);
                 }
 
-                if (data.elapsedTime > (tranform->maxFrame / effect_frame)) {
-                    m_managerRef->StopEffect(handle);
+                if (data.elapsedTime > (tranform->maxFrame / fps_)) {
+                    managerRef_->StopEffect(handle);
                     if (tranform->isLoop) {
                         data.elapsedTime = 0;
                     }
                     else {
-                        iter = m_upEffectInstances.erase(iter);
+                        iter = EffectInstances.erase(iter);
                     }
                 }
                 else {
-                    m_rendererRef->SetTime(static_cast<float>(data.elapsedTime));
-                    m_managerRef->SetMatrix(handle, CnvMat43(tranform->matrix));
-                    m_managerRef->SetSpeed(handle, tranform->speed);
+                    rendererRef_->SetTime(static_cast<float>(data.elapsedTime));
+                    managerRef_->SetMatrix(handle, CnvMat43(tranform->matrix));
+                    managerRef_->SetSpeed(handle, tranform->speed);
                     data.elapsedTime += delta_time;
                     ++iter;
                 }
             }
-
-            m_managerRef->Update(static_cast<float>(delta_time * effect_frame));
+            managerRef_->Update(static_cast<float>(delta_time * fps_));
         }
 
         void Draw() {
-            m_rendererRef->BeginRendering();
-            m_managerRef->Draw();
-            m_rendererRef->EndRendering();
+            rendererRef_->BeginRendering();
+            managerRef_->Draw();
+            rendererRef_->EndRendering();
         }
 
-        void SetCamera(const Effekseer::Matrix44 proj_mat, const Effekseer::Matrix44& view_mat) {
-            m_rendererRef->SetProjectionMatrix(CnvMat(GetProjMat(true)));
-            m_rendererRef->SetCameraMatrix(CnvMat(GetViewMat(true)));
+        void SetCamera() {
+            rendererRef_->SetProjectionMatrix(CnvMat(GetProjMat(true)));
+            rendererRef_->SetCameraMatrix(CnvMat(GetViewMat(true)));
         }
 
-        void SetEffect(std::string_view effect_name, std::string_view file_path) {
-            m_spEffectData.emplace(effect_name, std::make_shared<EFKData>(m_managerRef, file_path));
+        void AddEffect(std::string_view effect_name, std::string_view file_path) {
+            EffectList.emplace(effect_name, std::make_shared<EFKData>(managerRef_, file_path));
         }
 
         std::shared_ptr<EFKTransform> Play(std::string_view effect_name, const EFKTransform& effect_transform, bool is_unique = false) {
             if (is_unique) {
-                if (auto iter = m_upEffectInstances.find(effect_name.data()); iter != m_upEffectInstances.end()) {
+                if (auto iter = EffectInstances.find(effect_name.data()); iter != EffectInstances.end()) {
                     return iter->second->effectTransform;
                 }
             }
-            if (auto iter = m_spEffectData.find(effect_name.data()); iter != m_spEffectData.end()) {
+            if (auto iter = EffectList.find(effect_name.data()); iter != EffectList.end()) {
                 auto effect_instance = std::make_unique<EFKInstance>(iter->second);
                 effect_instance->effectTransform = std::make_shared<EFKTransform>(effect_transform);
                 auto& sp_et = effect_instance->effectTransform;
-                m_upEffectInstances.emplace(effect_name, std::move(effect_instance));
+                EffectInstances.emplace(effect_name, std::move(effect_instance));
                 return sp_et;
             }
             else {
@@ -261,15 +271,15 @@ namespace EFFEKSEERLIB {
     private:
 
         void Release() noexcept {
-            m_managerRef.Reset();
-            m_rendererRef.Reset();
+            managerRef_.Reset();
+            rendererRef_.Reset();
         }
 
         float fps_;
-        RendererRef                                                        m_rendererRef;
-        Effekseer::ManagerRef                                              m_managerRef;
-        std::unordered_map<std::string, std::shared_ptr<EFKData>>          m_spEffectData;
-        std::unordered_multimap<std::string, std::unique_ptr<EFKInstance>> m_upEffectInstances;
+        RendererRef                                                        rendererRef_;
+        Effekseer::ManagerRef                                              managerRef_;
+        std::unordered_map<std::string, std::shared_ptr<EFKData>>          EffectList;
+        std::unordered_multimap<std::string, std::unique_ptr<EFKInstance>> EffectInstances;
 
     };
 

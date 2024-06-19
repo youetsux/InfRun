@@ -66,10 +66,10 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 	Audio::Initialize();
 
 
-	EFFEKSEERLIB::EffekseerManager *efk = new EFFEKSEERLIB::EffekseerManager;
-	efk->Initialize(Direct3D::pDevice_, Direct3D::pContext_);
+	EFFEKSEERLIB::gEfk = new EFFEKSEERLIB::EffekseerManager;
+	EFFEKSEERLIB::gEfk->Initialize(Direct3D::pDevice_, Direct3D::pContext_);
 
-
+	EFFEKSEERLIB::gEfk->AddEffect("MAGIC", "magic.efk");
 	//ルートオブジェクト準備
 	//すべてのゲームオブジェクトの親となるオブジェクト
 	RootObject* pRootObject = new RootObject;
@@ -135,9 +135,10 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 				//カメラを更新
 				Camera::Update();
 
+
 				//エフェクトの更新
 				//VFX::Update();
-				efk->Update(deltaT);
+				EFFEKSEERLIB::gEfk->Update(deltaT/1000.0);
 
 				//このフレームの描画開始
 				Direct3D::BeginDraw();
@@ -148,7 +149,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 
 				//エフェクトの描画
 				//VFX::Draw();
-				efk->Draw();
+				EFFEKSEERLIB::gEfk->Draw();
 
 				//描画終了
 				Direct3D::EndDraw();
