@@ -1,5 +1,6 @@
 #pragma once
 #include "Engine/GameObject.h"
+#include "Engine/Model.h"
 
 
 namespace
@@ -27,6 +28,7 @@ class Wanwan :
 
 	Transform wanwans[3];
 	float speed_;
+	int liveTime;
 public:
 	//コンストラクタ
 	//引数：parent  親オブジェクト（SceneManager）
@@ -43,5 +45,8 @@ public:
 
 	//開放
 	void Release() override;
+	bool BomFlag() { return(liveTime == 0); }
+
+
 };
 

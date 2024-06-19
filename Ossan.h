@@ -1,5 +1,6 @@
 #pragma once
 #include "Engine/GameObject.h"
+#include "EffekseerVXF.h"
 
 //IDLE 0-147
 //RUN 148-186
@@ -81,4 +82,5 @@ public:
 public:
 	XMVECTOR GetMoveVec();
 	CDTimer* cdtimer_;
+	std::shared_ptr<EFFEKSEERLIB::EFKTransform> mt;
 };

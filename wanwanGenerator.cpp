@@ -2,6 +2,7 @@
 #include <set>
 #include "Engine/Model.h"
 #include "Engine/Debug.h"
+#include "EffekseerVXF.h"
 
 int wanwanGenerator::GenerateNum(int _n)
 {
@@ -36,6 +37,7 @@ void wanwanGenerator::Initialize()
 	//wan_ = new Wanwan(this->GetParent());
 	//wan_ = Instantiate<Wanwan>(this->GetParent());
 	//wan_->Initialize();
+	EFFEKSEERLIB::gEfk->AddEffect("BOM", "explode.efk");
 }
 
 void wanwanGenerator::Update()
@@ -65,8 +67,18 @@ void wanwanGenerator::Update()
 		
 		XMStoreFloat3(&(fl3tmp), tmp);
 		theI->SetPosition(fl3tmp);
+		if (theI->BomFlag())
+		{
+			EFFEKSEERLIB::EFKTransform t;
+			XMMATRIX sc = XMMatrixScaling(0.5, 0.5, 0.5);
+			XMStoreFloat4x4(&(t.matrix), sc*theI->GetWorldMatrix());
+			t.isLoop = false;
+			t.maxFrame = 80;
+			t.speed = 1.0;
+			EFFEKSEERLIB::gEfk->Play("BOM", t);
+		}
 	}
-	Debug::Log((int)wanList.size(), true);
+	//Debug::Log((int)wanList.size(), true);
 	auto itr = wanList.begin();
 	while (itr != wanList.end())
 	{

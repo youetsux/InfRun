@@ -6,7 +6,7 @@
 #include "CDTimer.h"
 #include "Ground.h"
 #include "DirectXMath.h"
-#include "EffekseerVXF.h"
+
 
 
 
@@ -34,12 +34,13 @@ void Ossan::Initialize()
 	Model::SetAnimFrame(hmodel_, OSFRAMES[ossanState_]. first, OSFRAMES[ossanState_].second, 1.5 );
 	cdtimer_ = new CDTimer(this, TRAVERSAL_TIME);
 
+	EFFEKSEERLIB::gEfk->AddEffect("MAGIC", { "mahoujin.efkefc" });
 	EFFEKSEERLIB::EFKTransform t;
 	XMStoreFloat4x4(&(t.matrix), transform_.GetWorldMatrix());
 	t.isLoop = true;
 	t.maxFrame = 120;
 	t.speed = 1.0;
-	std::shared_ptr<EFFEKSEERLIB::EFKTransform> mt = EFFEKSEERLIB::gEfk->Play("MAGIC", t);
+	mt = EFFEKSEERLIB::gEfk->Play("MAGIC", t);
 }
 
 
@@ -142,7 +143,7 @@ void Ossan::Update()
 			rotAngle = -rotAngle;
 		XMStoreFloat3(&(transform_.position_), lpos);
 		transform_.rotate_.y = rotAngle;
-
+		
 		
 	}
 	else
@@ -153,6 +154,9 @@ void Ossan::Update()
 	//Model::ResetAnimeRenderState(hmodel_);
 	cdtimer_->Update();
 
+	XMMATRIX sc = XMMatrixScaling(1.5, 1.5, 1.5);
+	XMMATRIX tr = XMMatrixTranslation(0, 0.1, 0);
+	XMStoreFloat4x4(&(mt->matrix), sc*tr*transform_.GetWorldMatrix());
 }
 
 void Ossan::Draw()

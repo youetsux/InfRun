@@ -201,7 +201,6 @@ namespace EFFEKSEERLIB {
         }
 
         void Update(double delta_time) {
-            SetCamera();
             //constexpr double effect_frame{ DEFAULT_FRAME_RATE };
             for (auto iter = EffectInstances.begin(); iter != EffectInstances.end();) 
             {
@@ -234,7 +233,13 @@ namespace EFFEKSEERLIB {
         }
 
         void Draw() {
+            SetCamera();
             rendererRef_->BeginRendering();
+            Effekseer::Manager::DrawParameter drawParameter;
+            drawParameter.ZNear = 0.0f;
+            drawParameter.ZFar = 1;
+            drawParameter.ViewProjectionMatrix = gRenderer->GetCameraProjectionMatrix();
+
             managerRef_->Draw();
             rendererRef_->EndRendering();
         }

@@ -69,7 +69,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 	EFFEKSEERLIB::gEfk = new EFFEKSEERLIB::EffekseerManager;
 	EFFEKSEERLIB::gEfk->Initialize(Direct3D::pDevice_, Direct3D::pContext_);
 
-	EFFEKSEERLIB::gEfk->AddEffect("MAGIC", "magic.efk");
+	
 	//ルートオブジェクト準備
 	//すべてのゲームオブジェクトの親となるオブジェクト
 	RootObject* pRootObject = new RootObject;
