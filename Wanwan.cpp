@@ -29,7 +29,7 @@ void Wanwan::Initialize()
 void Wanwan::Update()
 {
 	liveTime++;
-	if (liveTime == 120)
+	if (liveTime == 30)
 		liveTime = 0;
 	//Model::ResetAnimeRenderState(hmodel_);
 	//transform_.position_.z = transform_.position_.z - speed_;

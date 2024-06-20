@@ -18,7 +18,7 @@
 #include "Input.h"
 #include "Audio.h"
 #include "VFX.h"
-#include "../EffekseerVXF.h"
+#include "EffekseerVFX.h"
 
 #pragma comment(lib,"Winmm.lib")
 

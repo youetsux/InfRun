@@ -1,6 +1,6 @@
 #pragma once
 #include "Engine/GameObject.h"
-#include "EffekseerVXF.h"
+#include "Engine/EffekseerVFX.h"
 
 //IDLE 0-147
 //RUN 148-186

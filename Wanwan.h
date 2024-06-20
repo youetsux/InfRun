@@ -1,7 +1,7 @@
 #pragma once
 #include "Engine/GameObject.h"
 #include "Engine/Model.h"
-
+#include "Engine/EffekseerVFX.h"
 
 namespace
 {
@@ -46,7 +46,7 @@ public:
 	//ŠJ•ú
 	void Release() override;
 	bool BomFlag() { return(liveTime == 0); }
-
+	std::shared_ptr<EFFEKSEERLIB::EFKTransform> t;
 
 };
 

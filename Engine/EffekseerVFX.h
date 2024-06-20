@@ -5,9 +5,9 @@
 #include <string>
 #include <string_view>
 #include <unordered_map>
-#include "Engine/camera.h"
+#include "camera.h"
 #include <DirectXMath.h>
-#include "Assert.h"
+
 
 namespace fs = std::filesystem;
 
@@ -29,12 +29,23 @@ namespace fs = std::filesystem;
 namespace EFFEKSEERLIB {
     class EffekseerManager;//前方宣言
 
+
+
+
     constexpr float DEFAULT_FRAME_RATE{ 60.0f };
     //全体で使うEffekseerのマネージャやレンダラなどのデータ
     using RendererRef = EffekseerRendererDX11::RendererRef;
     extern Effekseer::ManagerRef gManager;
     extern EffekseerRendererDX11::RendererRef gRenderer;
     extern EffekseerManager *gEfk;
+
+
+    struct EFKTransform {
+        DirectX::XMFLOAT4X4 matrix;
+        bool                        isLoop = false;
+        float                       speed = 1.0f;
+        int                         maxFrame = 0;
+    };
 
 
     inline Effekseer::Matrix43 CnvMat43(DirectX::XMFLOAT4X4 mat)
@@ -153,12 +164,7 @@ namespace EFFEKSEERLIB {
 
     };
 
-    struct EFKTransform {
-        DirectX::XMFLOAT4X4 matrix;
-        bool                        isLoop = false;
-        float                       speed = 1.0f;
-        int                         maxFrame = 0;
-    };
+ 
 
     class EFKInstance
     {
@@ -267,7 +273,7 @@ namespace EFFEKSEERLIB {
                 return sp_et;
             }
             else {
-                assert::ShowError(ASSERT_FILE_LINE, "EffectData is not found.");
+                MessageBox(NULL, "EffectData Not Found!", "エフェクトファイルの読み込みに失敗", MB_OK);
             }
             return nullptr;
         }
