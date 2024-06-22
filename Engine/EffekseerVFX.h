@@ -107,6 +107,7 @@ namespace EFFEKSEERLIB {
         return fmat;
     }
 
+
     inline void RendererInit(ID3D11Device* dev, ID3D11DeviceContext* dc, int max_square) {
         gRenderer = EffekseerRendererDX11::Renderer::Create(dev, dc, max_square);
     }
@@ -200,6 +201,7 @@ namespace EFFEKSEERLIB {
 
         void Initialize(ID3D11Device* dev, ID3D11DeviceContext* dc, int max_square = 8192) {
             fps_ = DEFAULT_FRAME_RATE;
+
             RendererInit(dev, dc, max_square);
             ManagerInit(max_square);
             rendererRef_ = gRenderer;
