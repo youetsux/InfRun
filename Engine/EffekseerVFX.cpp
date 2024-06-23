@@ -1,7 +1,8 @@
-#include "Assert.h"
 #include "EffekseerVFX.h"
+
+
 namespace EFFEKSEERLIB {
     Effekseer::ManagerRef gManager;
     EffekseerRendererDX11::RendererRef gRenderer;
-    EffekseerManager* gEfk = nullptr;
+    std::shared_ptr<EFFEKSEERLIB::EffekseerManager> gEfk;
 }

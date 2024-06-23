@@ -65,8 +65,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 	//オーディオ（効果音）の準備
 	Audio::Initialize();
 
-
-	
+	EFFEKSEERLIB::gEfk = std::make_shared<EFFEKSEERLIB::EffekseerManager>();
 	EFFEKSEERLIB::gEfk->Initialize(Direct3D::pDevice_, Direct3D::pContext_);
 
 	

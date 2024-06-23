@@ -37,7 +37,7 @@ namespace EFFEKSEERLIB {
     using RendererRef = EffekseerRendererDX11::RendererRef;
     extern Effekseer::ManagerRef gManager;
     extern EffekseerRendererDX11::RendererRef gRenderer;
-    extern EffekseerManager *gEfk;
+    extern std::shared_ptr<EFFEKSEERLIB::EffekseerManager> gEfk;
 
 
     struct EFKTransform {
@@ -128,7 +128,7 @@ namespace EFFEKSEERLIB {
         gManager->SetCurveLoader(Effekseer::MakeRefPtr<Effekseer::CurveLoader>());
     }
 
-    //個別のデータ保持用
+    //個別のデータ保持用 ファイルパスとエフェクトの参照（スマポ）を保存
 
     class EFKData
     {
@@ -166,7 +166,7 @@ namespace EFFEKSEERLIB {
     };
 
  
-
+    //エフェクトの実体を保持するクラス、インスタンス
     class EFKInstance
     {
     public:
@@ -186,7 +186,6 @@ namespace EFFEKSEERLIB {
 
     private:
         const std::shared_ptr<EFKData> m_spEffectData;
-
     };
 
 
