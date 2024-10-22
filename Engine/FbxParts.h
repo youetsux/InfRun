@@ -4,12 +4,15 @@
 #include <DirectXMath.h>
 #include "Texture.h"
 #include "Transform.h"
+#include <string>
+#include <unordered_map>
 
 using namespace DirectX;
 
 class Fbx;
 struct RayCastData;
-
+using std::string;
+using std::unordered_map;
 //-----------------------------------------------------------
 //FBXの１つのパーツを扱うクラス
 //-----------------------------------------------------------
@@ -101,6 +104,7 @@ class FbxParts
 	FbxCluster**	ppCluster_;		// クラスタ情報（関節ごとに関連付けられた頂点情報）
 	int				numBone_;		// FBXに含まれている関節の数
 	Bone*			pBoneArray_;	// 各関節の情報
+	std::unordered_map<string, Bone*> 		bonePair;
 	Weight*			pWeightArray_;	// ウェイト情報（頂点の対する各関節の影響度合い）
 
 
@@ -115,8 +119,11 @@ class FbxParts
 
 public:
 	FbxParts();
+	FbxParts(Fbx* parent);
 	~FbxParts();
 
+
+	Fbx* parent_;
 	//FBXファイルから情報をロードして諸々準備する
 	//引数：pNode　情報が入っているノード
 	//戻値：結果
@@ -143,6 +150,12 @@ public:
 	//引数：position	ワールド座標での位置【out】
 	//戻値：見つかればtrue
 	bool GetBonePosition(std::string boneName, XMFLOAT3	* position);
+
+	//任意のボーンの位置を取得（スキンメッシュアニメーションの時）
+	//引数：boneName	取得したいボーンの位置
+	//引数：position	ワールド座標での位置【out】
+	//戻値：見つかればtrue
+	bool GetBonePositionAtNow(std::string boneName, XMFLOAT3* position);
 
 	//スキンメッシュ情報を取得
 	//戻値：スキンメッシュ情報
